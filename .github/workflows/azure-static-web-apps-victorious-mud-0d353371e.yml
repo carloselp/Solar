@@ -31,7 +31,7 @@ jobs:
 
       # Build do Angular
       - name: Build
-        run: npm run build -- --configuration production
+        run: npm run build -- --configuration production --output-path=dist
 
       # Deploy: só upload do dist gerado acima (sem Oryx buildar)
       - name: Deploy to Azure Static Web Apps
@@ -42,7 +42,7 @@ jobs:
           action: "upload"
           app_location: "/"
           api_location: ""
-          output_location: "dist/Modernize/browser"
+          output_location: "dist"
           skip_app_build: true
 
   close_pull_request_job:
