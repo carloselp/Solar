@@ -95,8 +95,7 @@ export class DashboardSolarplantComponent implements OnInit {
     genVoltageOptions!: LineChartOptions; // Geração x Tensão (dual axis)
     genTempOptions!: LineChartOptions;    // Geração x Temp Ambiente (dual axis)
     productionOptions!: LineChartOptions; // Produção (já real)
-
-    // Gráficos dos modais (por enquanto ainda mock)
+    
     irradianceHistoryOptions!: LineChartOptions;
     ambientTempHistoryOptions!: LineChartOptions;
     humidityHistoryOptions!: LineChartOptions;
