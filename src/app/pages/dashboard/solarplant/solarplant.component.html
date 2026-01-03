@@ -1,0 +1,291 @@
+<mat-card class="solar-dashboard-card cardWithShadow">
+
+    <mat-card class="solar-dashboard-card cardWithShadow">
+        <!-- BARRA DE FILTROS -->
+        <div class="solar-filters">
+            <div class="solar-filters-left">
+                <!-- Data -->
+                <mat-form-field appearance="outline" class="filter-field">
+                    <mat-label>Data</mat-label>
+                    <input
+                            matInput
+                            [matDatepicker]="datePicker"
+                            [(ngModel)]="selectedDate"
+                            [max]="maxDate"
+                            [disabled]="isLoading"
+                    />
+                    <mat-datepicker-toggle
+                            matSuffix
+                            [for]="datePicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #datePicker></mat-datepicker>
+                </mat-form-field>
+
+                <!-- Usina -->
+                <mat-form-field appearance="outline" class="filter-field">
+                    <mat-label>Usina</mat-label>
+                    <mat-select [(ngModel)]="selectedPlantId"
+                                [disabled]="isLoading">
+                        @for (plant of plants; track plant.id) {
+                            <mat-option [value]="plant.id">
+                                {{ plant.name }}
+                            </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <button
+                    mat-flat-button
+                    color="primary"
+                    class="filter-button"
+                    (click)="onApplyFilters()"
+                    [disabled]="isLoading"
+            >
+                Consultar
+            </button>
+        </div>
+
+        <div class="solar-dashboard">
+            @if (isLoading) {
+                <div class="solar-loading">
+                    <mat-spinner diameter="48"></mat-spinner>
+                </div>
+            } @else {
+                <!-- TOPO: Sol + Irradiação + Condições do ambiente -->
+                <div class="solar-top-row">
+                    <!-- Sol + Irradiação -->
+                    <div class="sun-block">
+                        <div class="sun-graphic">
+                            <div class="sun-circle"></div>
+                            <div class="sun-ring"></div>
+                        </div>
+
+                        <div class="metric-card irradiance-card metric-clickable"
+                             (click)="openMetricChart('irradiance')">
+                            <div class="metric-title">Irradiação atual</div>
+                            <div class="metric-value">
+                                {{ data.irradiance | number : '1.1-1' }} W/m²
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Condições do ambiente -->
+                    <div class="environment-block">
+                        <div class="metric-card environment-card">
+                            <div class="metric-title">Condições do ambiente</div>
+
+                            <div class="environment-row">
+                                <div
+                                        class="env-item metric-clickable"
+                                        (click)="openMetricChart('ambientTemp')"
+                                >
+                                    <div class="env-header">
+                                        <span class="env-icon temp"></span>
+                                        <span class="env-label">Temperatura</span>
+                                    </div>
+                                    <div class="env-value">
+                                        {{ data.ambientTemp | number : '1.1-1' }} °C
+                                    </div>
+                                </div>
+
+                                <div
+                                        class="env-item metric-clickable"
+                                        (click)="openMetricChart('humidity')"
+                                >
+                                    <div class="env-header">
+                                        <span class="env-icon humidity"></span>
+                                        <span class="env-label">Umidade</span>
+                                    </div>
+                                    <div class="env-value">
+                                        {{ data.humidity | number : '1.1-1' }} %
+                                    </div>
+                                </div>
+
+                                <div
+                                        class="env-item metric-clickable"
+                                        (click)="openMetricChart('wind')"
+                                >
+                                    <div class="env-header">
+                                        <span class="env-icon wind"></span>
+                                        <span class="env-label">Vento</span>
+                                    </div>
+                                    <div class="env-value">
+                                        {{ data.windSpeed | number : '1.1-1' }} m/s
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEIO: Painel + Inversor integrado ao card -->
+                <div class="solar-middle-row">
+                    <!-- Painel solar -->
+                    <div class="panel-block">
+                        <div class="panel-graphic">
+                            <div class="panel-grid">
+                                @for (cell of panelCells; track $index) {
+                                    <div class="panel-cell"></div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Temperatura da placa sobreposta ao painel -->
+                        <div
+                                class="metric-card plate-temp-card metric-clickable"
+                                (click)="openMetricChart('plateTemp')"
+                        >
+                            <div class="metric-title">Temperatura da placa</div>
+                            <div class="metric-value">
+                                {{ data.plateTemp | number : '1.1-1' }} °C
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Inversor + Medições elétricas em um bloco só -->
+                    <div class="electrical-block">
+                        <div class="inverter-card-group">
+                            <!-- Inversor visual -->
+                            <div class="inverter-visual">
+                                <div class="inverter-body">
+                                    <div class="inverter-screen"></div>
+                                    <div class="inverter-lights">
+                                        <span class="light green"></span>
+                                        <span class="light yellow"></span>
+                                    </div>
+                                </div>
+                                <div class="inverter-base"></div>
+                            </div>
+
+                            <!-- Card de medições elétricas colado no inversor -->
+                            <div class="metric-card electrical-card">
+                                <div class="metric-title">Medições elétricas</div>
+
+                                <div
+                                        class="stack-row metric-clickable metric-clickable--small"
+                                        (click)="openMetricChart('current')"
+                                >
+                                    <span class="stack-label">Corrente atual</span>
+                                    <span class="stack-value">
+                                    {{ data.current | number : '1.1-1' }} A
+                                  </span>
+                                </div>
+
+                                <div
+                                        class="stack-row metric-clickable metric-clickable--small"
+                                        (click)="openMetricChart('voltage')"
+                                >
+                                    <span class="stack-label">Tensão atual</span>
+                                    <span class="stack-value">
+                                    {{ data.voltage | number : '1.1-1' }} V
+                                  </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO: Gráficos de linha -->
+                <div class="solar-charts-section">
+                    <div class="charts-header">
+                        <h3 class="charts-title">Análises da geração</h3>
+                        <p class="charts-subtitle">
+                            Relação da geração com variáveis elétricas e climáticas (dados mockados).
+                        </p>
+                    </div>
+
+                    <div class="charts-grid">
+                        <!-- Geração x Corrente -->
+                        <mat-card class="chart-card cardWithShadow">
+                            <mat-card-content>
+                                <div class="chart-title-row">
+                                    <span class="dot blue"></span>
+                                    <span class="chart-title">Geração x Corrente</span>
+                                </div>
+                                <apx-chart
+                                        [series]="genCurrentOptions.series"
+                                        [chart]="genCurrentOptions.chart"
+                                        [xaxis]="genCurrentOptions.xaxis"
+                                        [yaxis]="genCurrentOptions.yaxis"
+                                        [stroke]="genCurrentOptions.stroke"
+                                        [dataLabels]="genCurrentOptions.dataLabels"
+                                        [legend]="genCurrentOptions.legend"
+                                        [colors]="genCurrentOptions.colors"
+                                        [tooltip]="genCurrentOptions.tooltip"
+                                ></apx-chart>
+                            </mat-card-content>
+                        </mat-card>
+
+                        <!-- Geração x Tensão -->
+                        <mat-card class="chart-card cardWithShadow">
+                            <mat-card-content>
+                                <div class="chart-title-row">
+                                    <span class="dot green"></span>
+                                    <span class="chart-title">Geração x Tensão</span>
+                                </div>
+                                <apx-chart
+                                        [series]="genVoltageOptions.series"
+                                        [chart]="genVoltageOptions.chart"
+                                        [xaxis]="genVoltageOptions.xaxis"
+                                        [yaxis]="genVoltageOptions.yaxis"
+                                        [stroke]="genVoltageOptions.stroke"
+                                        [dataLabels]="genVoltageOptions.dataLabels"
+                                        [legend]="genVoltageOptions.legend"
+                                        [colors]="genVoltageOptions.colors"
+                                        [tooltip]="genVoltageOptions.tooltip"
+                                ></apx-chart>
+                            </mat-card-content>
+                        </mat-card>
+
+                        <!-- Geração x Temperatura Ambiente -->
+                        <mat-card class="chart-card cardWithShadow">
+                            <mat-card-content>
+                                <div class="chart-title-row">
+                                    <span class="dot orange"></span>
+                                    <span class="chart-title">Geração x Temp. Ambiente</span>
+                                </div>
+                                <apx-chart
+                                        [series]="genTempOptions.series"
+                                        [chart]="genTempOptions.chart"
+                                        [xaxis]="genTempOptions.xaxis"
+                                        [yaxis]="genTempOptions.yaxis"
+                                        [stroke]="genTempOptions.stroke"
+                                        [dataLabels]="genTempOptions.dataLabels"
+                                        [legend]="genTempOptions.legend"
+                                        [colors]="genTempOptions.colors"
+                                        [tooltip]="genTempOptions.tooltip"
+                                ></apx-chart>
+                            </mat-card-content>
+                        </mat-card>
+
+                        <!-- Produção -->
+                        <mat-card class="chart-card cardWithShadow">
+                            <mat-card-content>
+                                <div class="chart-title-row">
+                                    <span class="dot cyan"></span>
+                                    <span class="chart-title">Produção</span>
+                                </div>
+                                <apx-chart
+                                        [series]="productionOptions.series"
+                                        [chart]="productionOptions.chart"
+                                        [xaxis]="productionOptions.xaxis"
+                                        [yaxis]="productionOptions.yaxis"
+                                        [stroke]="productionOptions.stroke"
+                                        [dataLabels]="productionOptions.dataLabels"
+                                        [legend]="productionOptions.legend"
+                                        [colors]="productionOptions.colors"
+                                        [tooltip]="productionOptions.tooltip"
+                                ></apx-chart>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+            }
+        </div>
+    </mat-card>
+</mat-card>

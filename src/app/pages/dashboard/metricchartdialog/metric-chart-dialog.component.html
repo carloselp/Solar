@@ -1,0 +1,27 @@
+<h2 mat-dialog-title class="metric-dialog-title">
+    {{ data.title }}
+</h2>
+
+@if (data.subtitle) {
+    <div class="metric-dialog-subtitle">
+        {{ data.subtitle }}
+    </div>
+}
+
+<mat-dialog-content class="metric-dialog-content">
+    <apx-chart
+            [series]="data.chartOptions.series"
+            [chart]="data.chartOptions.chart"
+            [xaxis]="data.chartOptions.xaxis"
+            [yaxis]="data.chartOptions.yaxis"
+            [stroke]="data.chartOptions.stroke"
+            [dataLabels]="data.chartOptions.dataLabels"
+            [legend]="data.chartOptions.legend"
+            [colors]="data.chartOptions.colors"
+            [tooltip]="data.chartOptions.tooltip"
+    ></apx-chart>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Fechar</button>
+</mat-dialog-actions>

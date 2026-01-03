@@ -1,0 +1,72 @@
+<h2 mat-dialog-title class="f-w-500">
+    {{ 'ProfilePage.PagesTitle' | translate }} - {{ data.profile_name }}
+</h2>
+
+<mat-dialog-content>
+    @if (isLoading) {
+        <div class="table-spinner">
+            <mat-spinner diameter="40"></mat-spinner>
+        </div>
+    } @else {
+        <div class="table-responsive">
+            <table mat-table [dataSource]="pages" class="w-100">
+
+                <!-- Coluna de seleção -->
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                        <mat-checkbox
+                                [checked]="isAllSelected()"
+                                [indeterminate]="isIndeterminate()"
+                                (change)="masterToggle($event.checked)"
+                        >
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let page">
+                        <mat-checkbox [(ngModel)]="page.has_permission"></mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <!-- Nome da página -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                        {{ 'ProfilePage.PageName' | translate }}
+                    </th>
+                    <td mat-cell *matCellDef="let page" class="f-s-14">
+                        {{ page.name_page }}
+                    </td>
+                </ng-container>
+
+                <!-- Grupo -->
+                <ng-container matColumnDef="group">
+                    <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                        {{ 'ProfilePage.Group' | translate }}
+                    </th>
+                    <td mat-cell *matCellDef="let page" class="f-s-14">
+                        {{ page.group_name }}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+        </div>
+    }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button
+            mat-button
+            (click)="onCancel()"
+            [disabled]="isLoading"
+    >
+        {{ 'Common.Cancel' | translate }}
+    </button>
+    <button
+            mat-flat-button
+            color="primary"
+            (click)="onSave()"
+            [disabled]="isLoading"
+    >
+        {{ 'Common.Save' | translate }}
+    </button>
+</mat-dialog-actions>

@@ -1,0 +1,209 @@
+<h2 class="f-w-500" mat-dialog-title>{{ ('Common.' + action) | translate }}</h2>
+
+@if (isProfilesLoading) {
+    <div class="d-flex justify-content-center align-items-center" style="height: 56px;">
+        <mat-spinner diameter="32"></mat-spinner>
+    </div>
+} @else {
+    @if (action !== 'Delete' && action !== 'Passkey') {
+        <mat-dialog-content>
+            <form #userForm="ngForm">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <mat-label class="f-s-14 f-w-600 m-b-8 d-block">{{ 'Common.Name' | translate }}</mat-label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input
+                                    type="text"
+                                    matInput
+                                    required
+                                    id="first_name"
+                                    name="first_name"
+                                    [(ngModel)]="local_data.first_name"
+                                    [placeholder]="'Common.Name' | translate"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-label class="f-s-14 f-w-600 m-b-8 d-block">{{ 'Common.LastName' | translate }}</mat-label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input
+                                    type="text"
+                                    matInput
+                                    required
+                                    id="last_name"
+                                    name="last_name"
+                                    [(ngModel)]="local_data.last_name"
+                                    [placeholder]="'Common.LastName' | translate"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-label class="f-s-14 f-w-600 m-b-8 d-block">{{ 'LoginPage.Username' | translate }}</mat-label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input
+                                    type="text"
+                                    matInput
+                                    required
+                                    id="user_login"
+                                    name="user_login"
+                                    [(ngModel)]="local_data.user_login"
+                                    [placeholder]="'LoginPage.Username' | translate"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-label class="f-s-14 f-w-600 m-b-8 d-block">Email</mat-label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input
+                                    type="text"
+                                    matInput
+                                    required
+                                    id="email"
+                                    name="email"
+                                    [(ngModel)]="local_data.email"
+                                    placeholder="Email"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-label class="f-s-14 f-w-600 m-b-8 d-block"
+                        >{{ 'Common.Mobile' | translate }}
+                        </mat-label
+                        >
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input
+                                    type="text"
+                                    matInput
+                                    required
+                                    id="contact"
+                                    name="contact"
+                                    [(ngModel)]="local_data.contact"
+                                    [placeholder]="'Common.Mobile' | translate"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
+                            {{ 'Common.Profile' | translate }}
+                        </mat-label>
+
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-select
+                                    id="profileId"
+                                    name="profileId"
+                                    [(ngModel)]="local_data.profileId"
+                            >
+                                <mat-option [value]="0">[Selecione]</mat-option>
+
+                                @for (profile of profiles; track profile.id) {
+                                    <mat-option [value]="profile.id">
+                                        {{ profile.profile_name }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <mat-label class="f-s-14 f-w-600 m-b-8 d-block">Status</mat-label>
+                        <mat-slide-toggle
+                                color="primary"
+                                [checked]="local_data.status === 1"
+                                (change)="local_data.status = $event.checked ? 1 : 0"
+                        >
+                            {{ 'Common.Active' | translate }}
+                        </mat-slide-toggle>
+
+                    </div>
+                </div>
+                <button mat-flat-button (click)="doAction()" [disabled]="!userForm.valid || isProfilesLoading">
+                    {{ 'Common.Save' | translate }}
+                </button>
+                <button
+                        mat-flat-button
+                        class="m-l-8 bg-error text-white"
+                        (click)="closeDialog()"
+                >
+                    {{ 'Common.Cancel' | translate }}
+                </button>
+            </form>
+        </mat-dialog-content>
+    } @else if (action === 'Delete') {
+        <div class="p-x-24">
+            <p>{{ 'Common.DeleteMsg' | translate }} <span class="f-w-600">{{ local_data.user_login }}</span> ?</p>
+        </div>
+        <div mat-dialog-actions class="p-x-24 p-b-24">
+            <button
+                    (click)="doAction()"
+                    mat-flat-button
+                    class="m-l-8 bg-error text-white"
+            >
+                {{ 'Common.Yes' | translate }}
+            </button>
+            <button mat-button (click)="closeDialog()" class="bg-light-error text-error m-l-8">{{ 'Common.No' | translate }}</button>
+        </div>
+    } @else {
+        <mat-dialog-content>
+            <form #passForm="ngForm">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
+                            {{ 'Common.Password' | translate }}
+                        </mat-label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input
+                                    type="password"
+                                    matInput
+                                    required
+                                    minlength="5"
+                                    id="password"
+                                    name="password"
+                                    [(ngModel)]="password"
+                                    [placeholder]="'Common.Password' | translate"
+                            />
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
+                            {{ 'Common.ConfirmPassword' | translate }}
+                        </mat-label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input
+                                    type="password"
+                                    matInput
+                                    required
+                                    minlength="5"
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    [(ngModel)]="confirmPassword"
+                                    [placeholder]="'Common.ConfirmPassword' | translate"
+                            />
+                        </mat-form-field>
+
+                        @if (password && confirmPassword && password !== confirmPassword) {
+                            <div class="text-error f-s-12 m-t-4">
+                                {{ 'Validation.PasswordsMustMatch' | translate }}
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <button
+                        mat-flat-button
+                        (click)="doAction()"
+                        [disabled]="!passForm.valid || password !== confirmPassword"
+                >
+                    {{ 'Common.Save' | translate }}
+                </button>
+                <button
+                        mat-flat-button
+                        class="m-l-8 bg-error text-white"
+                        (click)="closeDialog()"
+                >
+                    {{ 'Common.Cancel' | translate }}
+                </button>
+            </form>
+        </mat-dialog-content>
+    }
+}

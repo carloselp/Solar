@@ -1,0 +1,447 @@
+.notifications-page {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* HEADER */
+.notifications-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.page-subtitle {
+  margin: 4px 0 0;
+  color: var(--mat-sys-outline, #6b7280);
+  font-size: 13px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* MAPA */
+.map-card {
+  .map-container {
+    width: 100%;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .leaflet-host {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* TOPO: filtros + resumo */
+.top-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2.5fr) minmax(0, 1.5fr);
+  gap: 16px;
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filters-card {
+  .filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .filter-field {
+    min-width: 160px;
+    flex: 1 1 160px;
+  }
+
+  .filter-button {
+    margin-left: auto;
+
+    @media (max-width: 600px) {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+}
+
+.summary-card {
+  .summary-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .summary-item {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    .summary-label {
+      opacity: 0.8;
+    }
+
+    .summary-value {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    &.critical {
+      background: rgba(239, 68, 68, 0.08);
+      color: #b91c1c;
+    }
+
+    &.high {
+      background: rgba(249, 115, 22, 0.08);
+      color: #c2410c;
+    }
+
+    &.medium {
+      background: rgba(234, 179, 8, 0.08);
+      color: #854d0e;
+    }
+
+    &.low {
+      background: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+    }
+  }
+}
+
+/* LISTA DE NOTIFICAÇÕES */
+.list-card {
+  .notifications-accordion {
+    width: 100%;
+  }
+
+  .notification-panel {
+    margin-bottom: 8px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .notif-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 16px;
+  }
+
+  .notif-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .notif-title {
+    font-weight: 500;
+    font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .notif-type-chip {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.16);
+    color: #475569;
+  }
+
+  .notif-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    font-size: 11px;
+    color: #6b7280;
+  }
+
+  .notif-plant {
+    font-weight: 500;
+  }
+
+  .notif-datetime {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .severity-chip {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+
+    &.sev-critical {
+      background: rgba(239, 68, 68, 0.12);
+      color: #b91c1c;
+    }
+
+    &.sev-high {
+      background: rgba(249, 115, 22, 0.12);
+      color: #c2410c;
+    }
+
+    &.sev-medium {
+      background: rgba(234, 179, 8, 0.12);
+      color: #854d0e;
+    }
+
+    &.sev-low {
+      background: rgba(34, 197, 94, 0.12);
+      color: #15803d;
+    }
+  }
+
+  .notification-details {
+    padding: 12px 0 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    h4 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0;
+      font-size: 13px;
+      color: #4b5563;
+    }
+  }
+
+  .details-footer {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.13);
+      color: #475569;
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  .empty-state {
+    padding: 24px;
+    text-align: center;
+    color: #6b7280;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* cores de borda por severidade no panel */
+.notification-panel.sev-critical {
+  border-left: 4px solid #ef4444;
+}
+
+.notification-panel.sev-high {
+  border-left: 4px solid #f97316;
+}
+
+.notification-panel.sev-medium {
+  border-left: 4px solid #eab308;
+}
+
+.notification-panel.sev-low {
+  border-left: 4px solid #22c55e;
+}
+
+/* TOPO: mapa + resumo */
+.top-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.3fr);
+  gap: 16px;
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* MAPA no topo (mais “card de trabalho”, não gigante) */
+.map-card {
+  .map-container--top {
+    width: 100%;
+    height: 340px;
+    border-radius: 12px;
+    overflow: hidden;
+
+    @media (max-width: 960px) {
+      height: 280px;
+    }
+  }
+
+  .leaflet-host {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* resumo: filtro de data + botão */
+.summary-card {
+  .summary-filter-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: end;
+    margin-bottom: 10px;
+  }
+
+  .date-field {
+    width: 100%;
+  }
+
+  .consult-button {
+    height: 56px; /* alinha com mat-form-field outline */
+    white-space: nowrap;
+  }
+}
+
+/* filtros da lista */
+.list-card {
+  .list-filters-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .filter-field {
+    width: 100%;
+  }
+}
+
+/* ✅ Alinha Data e Botão na mesma linha (altura igual) */
+.summary-card {
+  .summary-filter-row {
+    display: flex;
+    gap: 12px;
+    align-items: center; /* chave: alinha verticalmente */
+  }
+
+  .date-field {
+    flex: 1;
+    margin: 0;
+  }
+
+  .consult-button {
+    height: 56px;        /* igual ao mat-form-field outline */
+    padding: 0 18px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+}
+
+/* ✅ Encolhe os cards do Resumo (topcards) pra não ficar maior que o mapa */
+.summary-card {
+  /* tira “gordura” do conteúdo do card inteiro */
+  ::ng-deep .mat-mdc-card-content {
+    padding: 14px;
+  }
+
+  /* bootstrap row/cols: reduz gutters e remove margens negativas visuais */
+  .row {
+    margin: 0;
+  }
+
+  .row > [class*="col-"] {
+    padding: 6px;
+  }
+
+  /* topcard menor */
+  .topcard {
+    border-radius: 12px;
+  }
+
+  .topcard ::ng-deep .mat-mdc-card-content {
+    padding: 14px !important; /* sobrescreve o p-32 */
+  }
+
+  .topcard img {
+    width: 32px !important;   /* menor que 40 */
+    height: 32px !important;
+  }
+
+  .topcard h4 {
+    margin-top: 6px !important;
+    font-size: 12px !important;
+    line-height: 1.2;
+  }
+
+  .topcard h6 {
+    margin-top: 2px !important;
+    font-size: 18px !important;
+    line-height: 1.2;
+  }
+}
+
+/* ✅ Ajuste fino: mapa um pouco menor para equilibrar com o resumo */
+.map-card {
+  .map-container--top {
+    height: 320px;
+
+    @media (max-width: 960px) {
+      height: 260px;
+    }
+  }
+}
+
+/* backgrounds suaves */
+.bg-light-critical { background: rgba(239, 68, 68, 0.12) !important; }
+.bg-light-high     { background: rgba(249, 115, 22, 0.12) !important; }
+.bg-light-medium   { background: rgba(234, 179, 8, 0.12) !important; }
+.bg-light-low      { background: rgba(34, 197, 94, 0.12) !important; }
+
+/* texto forte */
+.text-critical { color: #b91c1c !important; }
+.text-high     { color: #c2410c !important; }
+.text-medium   { color: #854d0e !important; }
+.text-low      { color: #15803d !important; }

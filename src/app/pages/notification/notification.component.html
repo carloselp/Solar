@@ -1,0 +1,202 @@
+<mat-card class="notifications-page cardWithShadow">
+    <!-- HEADER -->
+    <div class="notifications-header">
+        <div class="title-block">
+            <h2 class="page-title">Notificações da Usina</h2>
+            <p class="page-subtitle">
+                Eventos da usina fotovoltaica: falhas, alertas e avisos de manutenção.
+            </p>
+        </div>
+    </div>
+
+    <!-- TOPO: mapa + resumo -->
+    <div class="top-row">
+        <!-- MAPA (no lugar onde era o card de filtros) -->
+        <mat-card class="map-card cardWithShadow">
+            <mat-card-header>
+                <mat-card-title>Mapa da Usina</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="map-container map-container--top">
+                    <div
+                            leaflet
+                            class="leaflet-host"
+                            [leafletOptions]="mapOptions"
+                            [leafletLayers]="mapLayers"
+                            [leafletZoom]="zoomLevel"
+                            [leafletCenter]="mapCenter"
+                            (leafletMapReady)="onMapReady($event)"
+                    ></div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- RESUMO -->
+        <mat-card class="summary-card cardWithShadow">
+            <mat-card-content>
+                <!-- Filtro de data + consultar (acima do resumo) -->
+                <div class="summary-filter-row">
+                    <mat-form-field appearance="outline" class="date-field">
+                        <mat-label>Data</mat-label>
+                        <input
+                                matInput
+                                [matDatepicker]="picker"
+                                [(ngModel)]="selectedDate"
+                                [max]="maxDate"
+                                placeholder="Selecione a data"
+                        />
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <button
+                            mat-flat-button
+                            color="primary"
+                            class="consult-button"
+                            (click)="consultDate()"
+                    >
+                        Consultar
+                    </button>
+                </div>
+
+                <div class="summary-title">Resumo do dia</div>
+
+                @if (isLoading) {
+                    <div class="table-spinner">
+                        <mat-spinner diameter="48"></mat-spinner>
+                    </div>
+                } @else {
+                    <div class="row">
+                        @for (topcard of topcards; track topcard.title) {
+                            <div class="col-lg-6 col-sm-6 col-6">
+                                <mat-card class="topcard shadow-none text-center bg-light-{{ topcard.color }} shadow-none">
+                                    <mat-card-content class="p-32">
+                                        <img [src]="topcard.img" alt="users" width="40" class="rounded-circle"/>
+                                        <h4 class="f-s-14 f-w-600 text-{{ topcard.color }} m-t-8">
+                                            {{ topcard.title }}
+                                        </h4>
+                                        <h6 class="m-t-4 f-s-21 f-w-600 text-{{ topcard.color }} m-t-8">
+                                            {{ topcard.subtitle }}
+                                        </h6>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        }
+                    </div>
+                }
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- LISTA DE NOTIFICAÇÕES -->
+    <mat-card class="list-card cardWithShadow">
+        <mat-card-header>
+            <mat-card-title>Notificações recentes</mat-card-title>
+            <mat-card-subtitle>
+                Clique em cada item para ver detalhes, descrição completa e possíveis soluções.
+            </mat-card-subtitle>
+        </mat-card-header>
+
+        @if (isLoading) {
+            <div class="table-spinner">
+                <mat-spinner diameter="48"></mat-spinner>
+            </div>
+        } @else {
+            <mat-card-content>
+                <!-- filtros da LISTA (sem botão / auto) -->
+                <div class="list-filters-row">
+                    <mat-form-field appearance="outline" class="filter-field">
+                        <mat-label>Tipo de evento</mat-label>
+                        <mat-select [(ngModel)]="selectedType">
+                            <mat-option [value]="''">Todos</mat-option>
+                            <mat-option value="Comunicação">Comunicação</mat-option>
+                            <mat-option value="Elétrico">Elétrico</mat-option>
+                            <mat-option value="Térmico">Térmico</mat-option>
+                            <mat-option value="Manutenção">Manutenção</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="filter-field">
+                        <mat-label>Severidade</mat-label>
+                        <mat-select [(ngModel)]="selectedSeverity">
+                            <mat-option [value]="''">Todas</mat-option>
+                            <mat-option value="critical">Crítico</mat-option>
+                            <mat-option value="high">Alto</mat-option>
+                            <mat-option value="medium">Médio</mat-option>
+                            <mat-option value="low">Baixo</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Caso não haja nada -->
+                @if (filteredNotifications.length === 0) {
+                    <div class="empty-state">
+                        <i-tabler name="bell-off" class="icon-32 m-b-8"></i-tabler>
+                        <p>Nenhuma notificação encontrada com os filtros atuais.</p>
+                    </div>
+                } @else {
+                    <mat-accordion class="notifications-accordion">
+                        @for (n of filteredNotifications; track n) {
+                            <mat-expansion-panel
+                                    class="notification-panel"
+                                    [ngClass]="'sev-' + n.severidade"
+                            >
+                                <mat-expansion-panel-header>
+                                    <div class="notif-header">
+                                        <div class="notif-main">
+                                        <span class="severity-chip" [ngClass]="'sev-' + n.severidade">
+                      {{ n.qtd }}
+                    </span>
+                                            <span class="severity-chip" [ngClass]="'sev-' + n.severidade">
+                      {{ getSeverityLabel(n.severidade) }}
+                    </span>
+
+                                            <span class="notif-title">{{ n.titulo }}</span>
+
+                                            <span class="notif-type-chip">
+                      {{ n.tipo }}
+                    </span>
+                                        </div>
+
+                                        <div class="notif-meta">
+                                            <span class="notif-plant">{{ n.usina }}</span>
+                                            <span class="notif-datetime">
+                      <i-tabler name="clock" class="icon-14 m-r-4"></i-tabler>
+                                                {{ n.createdAt | date:'dd/MM/yyyy' }}
+                    </span>
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel-header>
+
+                                <div class="notification-details">
+                                    <div class="details-section">
+                                        <h4>Descrição</h4>
+                                        <p>{{ n.descricao }}</p>
+                                    </div>
+
+                                    <div class="details-section">
+                                        <h4>Possível solução</h4>
+                                        <p>{{ n.solucao }}</p>
+                                    </div>
+
+                                    <div class="details-footer">
+                                        <div class="tags">
+                    <span class="tag">
+                      <i-tabler name="alert-triangle" class="icon-14 m-r-4"></i-tabler>
+                        {{ n.tipo }}
+                    </span>
+                                            <span class="tag">
+                      <i-tabler name="building-factory" class="icon-14 m-r-4"></i-tabler>
+                                                {{ n.usina }}
+                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+                        }
+                    </mat-accordion>
+                }
+            </mat-card-content>
+        }
+    </mat-card>
+</mat-card>

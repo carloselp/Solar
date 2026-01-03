@@ -1,0 +1,28 @@
+.bg-login {
+  background-image: url('/assets/images/backgrounds/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+button mat-spinner {
+  margin-right: 8px;
+}
+
+.sun-icon {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background: #ffe082;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.8rem;
+  box-shadow: 0 10px 25px rgba(255, 193, 7, 0.45);
+
+  .material-icons {
+    font-size: 46px;
+    color: #f9a825;
+  }
+}

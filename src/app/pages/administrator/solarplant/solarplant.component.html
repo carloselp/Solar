@@ -1,0 +1,125 @@
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <div class="row justify-content-between">
+            <div class="col-lg-4">
+                <mat-form-field appearance="outline" class="w-100 hide-hint">
+                    <input
+                            matInput
+                            [placeholder]="'Common.Search' | translate"
+                            (keyup)="applyFilter($any($event.target).value)"
+                    />
+                    <mat-icon matSuffix>
+                        <i-tabler name="search" class="icon-20"></i-tabler>
+                    </mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4 d-flex align-items-center justify-content-end">
+                <button mat-flat-button (click)="openDialog('Add', {})" color="primary">
+                    {{ 'Common.Add' | translate }}
+                </button>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <div class="table-wrapper">
+            @if (isLoading) {
+                <div class="table-spinner">
+                    <mat-spinner diameter="48"></mat-spinner>
+                </div>
+            } @else {
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="w-100">
+                        <ng-container matColumnDef="#">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">#</th>
+                            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                                {{ 'Common.Name' | translate }}
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="d-flex align-items-center">
+                                    <div class="m-l-16">
+                                        <p class="f-w-600 f-s-16 m-b-4 m-t-0">
+                                            {{ element.name }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="efficiency">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                                {{ 'SolarplantPage.Efficiency' | translate }}
+                            </th>
+                            <td mat-cell *matCellDef="let element" class="f-s-14">
+                                {{ element.efficiency }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="id_external">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                                {{ 'SolarplantPage.ExternalId' | translate }}
+                            </th>
+                            <td mat-cell *matCellDef="let element" class="f-s-14">
+                                {{ element.id_external }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="partnership">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                                {{ 'SolarplantPage.Partnership' | translate }}
+                            </th>
+                            <td mat-cell *matCellDef="let element" class="f-s-14">
+                                {{ element.partnershipName }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="apiKey">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                                {{ 'SolarplantPage.Key' | translate }}
+                            </th>
+                            <td mat-cell *matCellDef="let element" class="f-s-14">
+                                {{ element.apiKey }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                                {{ 'Common.Action' | translate }}
+                            </th>
+                            <td mat-cell *matCellDef="let element" class="action-link">
+                                <a
+                                        (click)="openDialog('Update', element)"
+                                        class="m-r-10 cursor-pointer"
+                                >
+                                    <i-tabler name="edit" class="icon-18"></i-tabler>
+                                </a>
+                                <a
+                                        (click)="openDialog('Delete', element)"
+                                        class="m-r-10 cursor-pointer"
+                                >
+                                    <i-tabler name="trash" class="icon-18"></i-tabler>
+                                </a>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>
+
+                    <mat-paginator
+                            [pageSizeOptions]="[5, 10, 20]"
+                            [pageSize]="10"
+                            [length]="dataSource.data.length"
+                            showFirstLastButtons
+                    ></mat-paginator>
+                </div>
+            }
+        </div>
+    </mat-card-content>
+</mat-card>

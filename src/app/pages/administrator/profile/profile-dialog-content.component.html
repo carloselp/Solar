@@ -1,0 +1,51 @@
+<h2 class="f-w-500" mat-dialog-title>{{ ('Common.' + action) | translate }}</h2>
+
+@if (action !== 'Delete' && action !== 'UpdatePages') {
+    <mat-dialog-content>
+        <form #userForm="ngForm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <mat-label class="f-s-14 f-w-600 m-b-8 d-block">{{ 'Common.Name' | translate }}</mat-label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input
+                                type="text"
+                                matInput
+                                required
+                                id="profile_name"
+                                name="profile_name"
+                                [(ngModel)]="local_data.profile_name"
+                                [placeholder]="'Common.Name' | translate"
+                        />
+                    </mat-form-field>
+                </div>
+                
+            </div>
+            <button mat-flat-button
+                    (click)="doAction()"
+                    [disabled]="!userForm.valid">
+                {{ 'Common.Save' | translate }}
+            </button>
+            <button
+                    mat-flat-button
+                    class="m-l-8 bg-error text-white"
+                    (click)="closeDialog()"
+            >
+                {{ 'Common.Cancel' | translate }}
+            </button>
+        </form>
+    </mat-dialog-content>
+} @else if (action === 'Delete') {
+    <div class="p-x-24">
+        <p>{{ 'Common.DeleteMsg' | translate }} <span class="f-w-600">{{ local_data.profile_name }}</span> ?</p>
+    </div>
+    <div mat-dialog-actions class="p-x-24 p-b-24">
+        <button
+                (click)="doAction()"
+                mat-flat-button
+                class="m-l-8 bg-error text-white"
+        >
+            {{ 'Common.Yes' | translate }}
+        </button>
+        <button mat-button (click)="closeDialog()" class="bg-light-error text-error m-l-8">{{ 'Common.No' | translate }}</button>
+    </div>
+}

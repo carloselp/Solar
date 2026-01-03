@@ -1,0 +1,109 @@
+{
+  "Logout": "Sair",
+  "Login": "Login",
+  "Register": "Registrar",
+  "Pages": {
+    "Starter": "Início",
+    "Administrator": "Administrador",
+    "User": "Usuário",
+    "Solarplant": "Usina",
+    "Profile": "Perfil",
+    "Page": "Página",
+    "Notifications": "Notificações",
+    "Alerts": "Alertas"
+  },
+  "LoginPage": {
+    "Username": "Usuário",
+    "Password": "Senha",
+    "SignIn": "Entrar",
+    "Device": "Lembre-se desse dispositivo",
+    "Forgot Password": "Esqueci a senha",
+    "Welcome": "Bem Vindo ao InoveSolar",
+    "Description": "Seu Portal de Monitoramento da sua Usina Solar",
+    "Loading": "Autenticando...",
+    "Success": {
+      "Title": "Sucesso",
+      "Message": "Login realizado com sucesso."
+    },
+    "Error": {
+      "Title": "Erro",
+      "Message": "Usuário/Senha inválido."
+    },
+    "Required": {
+      "Username": "Usuário é obrigatório.",
+      "Username Length": "Usuário deve ter no mínimo 6 caracteres.",
+      "Password": "Senha é obrigatório."
+    },
+    "AlreadyLogged": {
+      "Title": "Atenção",
+      "Message": "Usuário encontra-se logado."
+    }
+  },
+  "Header": {
+    "Notifications": {
+      "Title": "Notificações",
+      "New": "novo(s)",
+      "SeeAll": "Veja todas as notificações"
+    },
+    "UserProfile": {
+      "Title": "Perfil",
+      "MyProfile": "Meu Perfil",
+      "Settings": "Configurações"
+    },
+    "Logout": {
+      "Title": "Sair",
+      "Message": "Tem certeza que deseja encerrar a sessão?",
+      "Cancel": "Cancelar",
+      "Confirm": "Sair"
+    }
+  },
+  "Common": {
+    "Active" : "Ativo",
+    "Inactive" : "Inativo",
+    "Name": "Nome",
+    "Mobile": "Contato",
+    "Action": "Ação",
+    "Search" : "Procurar",
+    "LastName" : "Sobrenome",
+    "DeleteMsg" : "Tem certeza que deseja apagar ",
+    "Add": "Adicionar",
+    "Delete": "Deletar",
+    "Update": "Atualizar",
+    "Yes": "Sim",
+    "No": "Não",
+    "Save": "Salvar",
+    "Cancel": "Cancelar",
+    "Success": "Sucesso",
+    "Error": "Erro",
+    "Failed": "Falha",
+    "Successfully": "Operação realizada com sucesso.",
+    "Password": "Senha",
+    "ConfirmPassword": "Confirmação da senha",
+    "Passkey": "Troca de senha",
+    "ServerError": "Ocorreu um erro no servidor. Tente novamente mais tarde.",
+    "SessionExpiredTitle": "Sessão expirada",
+    "SessionExpiredMessage": "Sua sessão expirou. Faça login novamente.",
+    "Unsuccessful": "Operação não realizada.",
+    "Profile": "Perfil"
+  },
+  "Validation": {
+    "PasswordsMustMatch": "Senha e confirmação de senha não são iguais."
+  },
+  "SolarplantPage": {
+    "Efficiency" : "Eficiência",
+    "ExternalId": "Identificação Externa",
+    "Partnership": "Parceiro",
+    "Key": "Chave"
+  },
+  "ProfilePage": {
+    "CountPages": "Páginas Vinculadas",
+    "PagesTitle": "Páginas do Perfil",
+    "PageName": "Página",
+    "Group": "Grupo"
+  },
+  "PagePage": {
+    "Route": "Rota",
+    "Icon": "Ícone",
+    "Group": "Grupo"
+  }
+}

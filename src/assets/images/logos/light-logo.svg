@@ -1,0 +1,108 @@
+<svg
+        width="220"
+        height="60"
+        viewBox="0 0 220 60"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-labelledby="title-light"
+>
+    <title id="title-light">InoveSolar</title>
+
+    <defs>
+        <!-- brilho do sol mais suave para fundo escuro -->
+        <radialGradient id="sunGlowLight" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#FFE082" stop-opacity="1" />
+            <stop offset="100%" stop-color="#FFCA28" stop-opacity="0.5" />
+        </radialGradient>
+    </defs>
+
+    <!-- SOL À ESQUERDA -->
+    <g>
+        <!-- círculo de glow -->
+        <circle cx="30" cy="30" r="26" fill="url(#sunGlowLight)" />
+
+        <!-- círculo central -->
+        <circle cx="30" cy="30" r="13" fill="#FFB300" />
+
+        <!-- raios (8 direções) -->
+        <g fill="#FFCA28">
+            <rect
+                    x="29"
+                    y="6"
+                    width="2"
+                    height="8"
+                    rx="1"
+                    transform="rotate(0 30 30)"
+            />
+            <rect
+                    x="29"
+                    y="6"
+                    width="2"
+                    height="8"
+                    rx="1"
+                    transform="rotate(45 30 30)"
+            />
+            <rect
+                    x="29"
+                    y="6"
+                    width="2"
+                    height="8"
+                    rx="1"
+                    transform="rotate(90 30 30)"
+            />
+            <rect
+                    x="29"
+                    y="6"
+                    width="2"
+                    height="8"
+                    rx="1"
+                    transform="rotate(135 30 30)"
+            />
+            <rect
+                    x="29"
+                    y="6"
+                    width="2"
+                    height="8"
+                    rx="1"
+                    transform="rotate(180 30 30)"
+            />
+            <rect
+                    x="29"
+                    y="6"
+                    width="2"
+                    height="8"
+                    rx="1"
+                    transform="rotate(225 30 30)"
+            />
+            <rect
+                    x="29"
+                    y="6"
+                    width="2"
+                    height="8"
+                    rx="1"
+                    transform="rotate(270 30 30)"
+            />
+            <rect
+                    x="29"
+                    y="6"
+                    width="2"
+                    height="8"
+                    rx="1"
+                    transform="rotate(315 30 30)"
+            />
+        </g>
+    </g>
+
+    <!-- TEXTO INOVESOLAR (branco para fundo escuro) -->
+    <text
+            x="70"
+            y="37"
+            font-family="Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+            font-size="24"
+            font-weight="700"
+            letter-spacing="0.5"
+            fill="#FFFFFF"
+    >
+        InoveSolar
+    </text>
+</svg>

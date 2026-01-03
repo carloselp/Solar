@@ -1,0 +1,119 @@
+<h2 class="f-w-500" mat-dialog-title>{{ ('Common.' + action) | translate }}</h2>
+
+@if (action !== 'Delete') {
+    <mat-dialog-content>
+        <form #userForm="ngForm">
+            <div class="row">
+                <div class="col-lg-6">
+                    <mat-label class="f-s-14 f-w-600 m-b-8 d-block">{{ 'Common.Name' | translate }}</mat-label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input
+                                type="text"
+                                matInput
+                                required
+                                id="name"
+                                name="name"
+                                [(ngModel)]="local_data.name"
+                                [placeholder]="'Common.Name' | translate"
+                        />
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6">
+                    <mat-label class="f-s-14 f-w-600 m-b-8 d-block">{{ 'SolarplantPage.Efficiency' | translate }}</mat-label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input
+                                type="number"
+                                matInput
+                                required
+                                id="efficiency"
+                                name="efficiency"
+                                [(ngModel)]="local_data.efficiency"
+                                [placeholder]="'SolarplantPage.Efficiency' | translate"
+                                inputmode="decimal"
+                                step="0.01"
+                        />
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6">
+                    <mat-label class="f-s-14 f-w-600 m-b-8 d-block">{{ 'SolarplantPage.ExternalId' | translate }}</mat-label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input
+                                type="number"
+                                matInput
+                                required
+                                id="id_external"
+                                name="id_external"
+                                [(ngModel)]="local_data.id_external"
+                                [placeholder]="'SolarplantPage.ExternalId' | translate"
+                        />
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6">
+                    <mat-label class="f-s-14 f-w-600 m-b-8 d-block">{{ 'SolarplantPage.Partnership' | translate }}</mat-label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{ 'SolarplantPage.Partnership' | translate }}</mat-label>
+                        <mat-select
+                                required
+                                id="partnership"
+                                name="partnership"
+                                [(ngModel)]="local_data.partnershipId"
+                        >
+                            <mat-option [value]="0">
+                                [Selecione]
+                            </mat-option>
+
+                            <mat-option [value]="1">
+                                Thingspeak
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6">
+                    <mat-label class="f-s-14 f-w-600 m-b-8 d-block"
+                    >{{ 'SolarplantPage.Key' | translate }}
+                    </mat-label
+                    >
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input
+                                type="text"
+                                matInput
+                                required
+                                id="apiKey"
+                                name="apiKey"
+                                [(ngModel)]="local_data.apiKey"
+                                [placeholder]="'SolarplantPage.Key' | translate"
+                        />
+                    </mat-form-field>
+                </div>
+            </div>
+            <button mat-flat-button
+                    (click)="doAction()"
+                    [disabled]="!userForm.valid ||
+                                !local_data.partnershipId ||
+                                local_data.partnershipId <= 0">
+                {{ 'Common.Save' | translate }}
+            </button>
+            <button
+                    mat-flat-button
+                    class="m-l-8 bg-error text-white"
+                    (click)="closeDialog()"
+            >
+                {{ 'Common.Cancel' | translate }}
+            </button>
+        </form>
+    </mat-dialog-content>
+} @else if (action === 'Delete') {
+    <div class="p-x-24">
+        <p>{{ 'Common.DeleteMsg' | translate }} <span class="f-w-600">{{ local_data.name }}</span> ?</p>
+    </div>
+    <div mat-dialog-actions class="p-x-24 p-b-24">
+        <button
+                (click)="doAction()"
+                mat-flat-button
+                class="m-l-8 bg-error text-white"
+        >
+            {{ 'Common.Yes' | translate }}
+        </button>
+        <button mat-button (click)="closeDialog()" class="bg-light-error text-error m-l-8">{{ 'Common.No' | translate }}</button>
+    </div>
+}
