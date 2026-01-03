@@ -33,6 +33,15 @@ jobs:
       - name: Build
         run: npm run build -- --configuration production
 
+      - name: Debug dist
+        run: |
+          echo "== ls =="
+          ls -la
+          echo "== ls dist =="
+          ls -la dist || true
+          echo "== find index.html =="
+          find dist -maxdepth 4 -name index.html -print || true
+
       # Deploy: só upload do dist gerado acima (sem Oryx buildar)
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
