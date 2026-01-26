@@ -35,6 +35,7 @@ import { finalize } from 'rxjs/operators';
 export class AppSideLoginComponent implements OnInit {
     options = this.settings.getOptions();
     isLoading = false;
+    hidePassword = true;
 
     form = new FormGroup({
         uname: new FormControl<string | null>('', [
@@ -105,5 +106,9 @@ export class AppSideLoginComponent implements OnInit {
                 this.toastr.error(msg, title);
             },
         });
+    }
+    
+    togglePasswordVisibility() {
+        this.hidePassword = !this.hidePassword;
     }
 }
