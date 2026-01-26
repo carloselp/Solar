@@ -61,30 +61,21 @@
                             </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="id_external">
+                        <ng-container matColumnDef="coef_temp">
                             <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
-                                {{ 'SolarplantPage.ExternalId' | translate }}
+                                {{ 'SolarplantPage.CoefTemp' | translate }}
                             </th>
                             <td mat-cell *matCellDef="let element" class="f-s-14">
-                                {{ element.id_external }}
+                                {{ element.coef_temp }}
                             </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="partnership">
+                        <ng-container matColumnDef="temp_ref">
                             <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
-                                {{ 'SolarplantPage.Partnership' | translate }}
+                                {{ 'SolarplantPage.TempRef' | translate }}
                             </th>
                             <td mat-cell *matCellDef="let element" class="f-s-14">
-                                {{ element.partnershipName }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="apiKey">
-                            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
-                                {{ 'SolarplantPage.Key' | translate }}
-                            </th>
-                            <td mat-cell *matCellDef="let element" class="f-s-14">
-                                {{ element.apiKey }}
+                                {{ element.temp_ref }}
                             </td>
                         </ng-container>
 

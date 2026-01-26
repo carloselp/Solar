@@ -91,9 +91,8 @@
   },
   "SolarplantPage": {
     "Efficiency" : "Eficiência",
-    "ExternalId": "Identificação Externa",
-    "Partnership": "Parceiro",
-    "Key": "Chave"
+    "CoefTemp": "Coeficiente Temperatura",
+    "TempRef": "Referência Temperatura"
   },
   "ProfilePage": {
     "CountPages": "Páginas Vinculadas",

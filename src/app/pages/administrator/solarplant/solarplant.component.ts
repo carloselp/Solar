@@ -19,10 +19,8 @@ export interface SolarplantModel {
     id: number;
     name: string;
     efficiency: number;
-    id_external: number;
-    partnershipId: number;
-    partnershipName: string;
-    apiKey: string;
+    coef_temp: number;
+    temp_ref: number;
 }
 @Component({
   templateUrl: './solarplant.component.html',
@@ -48,9 +46,8 @@ export class SolarplantComponent extends BaseCrudComponent<SolarplantModel>{
         '#',
         'name',
         'efficiency',
-        'id_external',
-        'partnership',
-        'apiKey',
+        'coef_temp',
+        'temp_ref',
         'action',
     ];
 
