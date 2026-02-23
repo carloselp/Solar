@@ -4,14 +4,15 @@
         <!-- BARRA DE FILTROS -->
         <div class="solar-filters">
             <div class="solar-filters-left">
-                <!-- Data -->
+                <!-- Data inicial -->
                 <mat-form-field appearance="outline" class="filter-field">
-                    <mat-label>Data</mat-label>
+                    <mat-label>Data inicial</mat-label>
                     <input
                             matInput
                             [matDatepicker]="datePicker"
                             [(ngModel)]="selectedDate"
                             [max]="maxDate"
+                            (ngModelChange)="onStartDateChange($event)"
                             [disabled]="isLoading"
                     />
                     <mat-datepicker-toggle
@@ -19,6 +20,25 @@
                             [for]="datePicker"
                     ></mat-datepicker-toggle>
                     <mat-datepicker #datePicker></mat-datepicker>
+                </mat-form-field>
+
+                <!-- Data fim -->
+                <mat-form-field appearance="outline" class="filter-field">
+                    <mat-label>Data fim</mat-label>
+                    <input
+                            matInput
+                            [matDatepicker]="endDatePicker"
+                            [(ngModel)]="selectedEndDate"
+                            [min]="selectedDate"
+                            [max]="maxDate"
+                            (ngModelChange)="onEndDateChange($event)"
+                            [disabled]="isLoading"
+                    />
+                    <mat-datepicker-toggle
+                            matSuffix
+                            [for]="endDatePicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
                 </mat-form-field>
 
                 <!-- Usina -->
@@ -56,16 +76,34 @@
                 <div class="solar-top-row">
                     <!-- Sol + Irradiação -->
                     <div class="sun-block">
-                        <div class="sun-graphic">
-                            <div class="sun-circle"></div>
+                        <div class="sun-graphic" [ngClass]="'sun-' + irradianceMood">
+                            <div class="sun-circle">
+                                <div class="sun-face">
+                                    <span class="sun-eye"></span>
+                                    <span class="sun-eye"></span>
+                                    <span class="sun-mouth" [ngClass]="'mouth-' + irradianceMood"></span>
+                                </div>
+                            </div>
                             <div class="sun-ring"></div>
                         </div>
 
-                        <div class="metric-card irradiance-card metric-clickable"
-                             (click)="openMetricChart('irradiance')">
-                            <div class="metric-title">Irradiação atual</div>
-                            <div class="metric-value">
-                                {{ data.irradiance | number : '1.1-1' }} W/m²
+                        <div class="irradiance-stack">
+                            <div class="metric-card irradiance-card metric-clickable"
+                                 (click)="openMetricChart('irradiance')">
+                                <div class="metric-title">Irradiação atual</div>
+                                <div class="metric-value">
+                                    {{ data.irradiance | number : '1.1-1' }} W/m²
+                                </div>
+                            </div>
+
+                            <div class="irradiance-daily-status" [ngClass]="'status-' + irradianceMood">
+                                <div class="status-title">Média diária de irradiação</div>
+                                <div class="status-value">
+                                    {{ irradianceDailyAverage | number : '1.1-1' }} W/m²
+                                </div>
+                                <div class="status-pill">
+                                    Sol {{ irradianceMoodLabel }}
+                                </div>
                             </div>
                         </div>
 

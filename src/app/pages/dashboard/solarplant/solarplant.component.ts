@@ -44,6 +44,8 @@ type MetricKey =
     | 'current'
     | 'voltage';
 
+type IrradianceMood = 'sad' | 'normal' | 'happy';
+
 export type LineChartOptions = {
     series: ApexAxisChartSeries | ApexNonAxisChartSeries;
     chart: ApexChart;
@@ -72,6 +74,11 @@ export type LineChartOptions = {
     styleUrl: './solarplant.component.scss',
 })
 export class DashboardSolarplantComponent implements OnInit {
+    private readonly irradianceThresholds = {
+        low: 300,
+        high: 700,
+    };
+
     data: DashboardMetrics = {
         current: 0,
         irradiance: 0,
@@ -89,7 +96,11 @@ export class DashboardSolarplantComponent implements OnInit {
 
     plants: SolarplantModel[] = [];
     selectedDate: Date | null = new Date();
+    selectedEndDate: Date | null = new Date();
     selectedPlantId: number = 0;
+    irradianceDailyAverage = 0;
+    irradianceMood: IrradianceMood = 'normal';
+    irradianceMoodLabel = 'Normal';
 
     genCurrentOptions!: LineChartOptions; // Geração x Corrente (dual axis)
     genVoltageOptions!: LineChartOptions; // Geração x Tensão (dual axis)
@@ -146,34 +157,51 @@ export class DashboardSolarplantComponent implements OnInit {
     }
 
     onApplyFilters(): void {
-        if (!this.selectedDate) {
+        if (!this.selectedDate || !this.selectedEndDate) {
+            return;
+        }
+
+        const normalizedRange = this.getNormalizedDateRange(
+            this.selectedDate,
+            this.selectedEndDate
+        );
+        if (!normalizedRange) {
             return;
         }
 
         const plantId = this.selectedPlantId ?? 0;
-        const date = this.selectedDate;
+        const { startDate, endDate } = normalizedRange;
 
         this.isLoading = true;
 
         forkJoin({
-            medicao: this.dashboardService.getMedicao(plantId, date),
-            geracao: this.dashboardService.getGeracao(plantId, date),
+            medicao: this.dashboardService.getMedicao(plantId, startDate, endDate),
+            geracao: this.dashboardService.getGeracao(plantId, startDate, endDate),
+            irradiacaoHistorico: this.dashboardService.getHistoricoMedicao(
+                plantId,
+                startDate,
+                6, // campo Irradiação
+                endDate
+            ),
 
             // 3 novos endpoints para gráficos dual axis:
             geracaoXCorrente: this.dashboardService.getGeracaoXOutraMedida(
                 plantId,
-                date,
-                2 // campo Corrente
+                startDate,
+                2, // campo Corrente
+                endDate
             ),
             geracaoXTensao: this.dashboardService.getGeracaoXOutraMedida(
                 plantId,
-                date,
-                3 // campo Tensão
+                startDate,
+                3, // campo Tensão
+                endDate
             ),
             geracaoXTempAmbiente: this.dashboardService.getGeracaoXOutraMedida(
                 plantId,
-                date,
-                5 // campo Temperatura ambiente
+                startDate,
+                5, // campo Temperatura ambiente
+                endDate
             ),
         })
             .pipe(
@@ -185,6 +213,7 @@ export class DashboardSolarplantComponent implements OnInit {
                 next: ({
                            medicao,
                            geracao,
+                           irradiacaoHistorico,
                            geracaoXCorrente,
                            geracaoXTensao,
                            geracaoXTempAmbiente,
@@ -192,6 +221,10 @@ export class DashboardSolarplantComponent implements OnInit {
                     // 1) Topo: cards (medição atual)
                     this.data = this.dashboardService.mapMedicoesToDashboardMetrics(
                         medicao
+                    );
+                    this.updateIrradianceDailyStatus(
+                        irradiacaoHistorico,
+                        this.data.irradiance
                     );
 
                     // 2) Produção (linha única)
@@ -213,6 +246,106 @@ export class DashboardSolarplantComponent implements OnInit {
                     console.error('Erro ao carregar dashboard', err);
                 },
             });
+    }
+
+    onStartDateChange(date: Date | null): void {
+        this.selectedDate = date;
+
+        if (!date || !this.selectedEndDate) {
+            return;
+        }
+
+        const start = this.stripTime(date);
+        const end = this.stripTime(this.selectedEndDate);
+
+        if (end < start) {
+            this.selectedEndDate = date;
+        }
+    }
+
+    onEndDateChange(date: Date | null): void {
+        this.selectedEndDate = date;
+
+        if (!date || !this.selectedDate) {
+            return;
+        }
+
+        const start = this.stripTime(this.selectedDate);
+        const end = this.stripTime(date);
+
+        if (end < start) {
+            this.selectedEndDate = this.selectedDate;
+        }
+    }
+
+    private getNormalizedDateRange(
+        startDate: Date,
+        endDate: Date
+    ): { startDate: Date; endDate: Date } | null {
+        const start = this.stripTime(startDate);
+        const end = this.stripTime(endDate);
+
+        if (end < start) {
+            this.selectedEndDate = startDate;
+            return null;
+        }
+
+        return { startDate, endDate };
+    }
+
+    private stripTime(date: Date): Date {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    private updateIrradianceDailyStatus(
+        points: HistoricoMedicaoItem[],
+        fallbackCurrentValue: number
+    ): void {
+        const validPoints = (points ?? []).filter((point) =>
+            Number.isFinite(Number(point.value))
+        );
+
+        const dailyBuckets = new Map<string, { sum: number; count: number }>();
+
+        validPoints.forEach((point) => {
+            const date = new Date(point.createdAt);
+            const key = `${date.getFullYear()}-${String(
+                date.getMonth() + 1
+            ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            const value = Number(point.value);
+
+            const current = dailyBuckets.get(key) ?? { sum: 0, count: 0 };
+            current.sum += value;
+            current.count += 1;
+            dailyBuckets.set(key, current);
+        });
+
+        const dailyAverages = Array.from(dailyBuckets.values()).map((entry) =>
+            entry.sum / entry.count
+        );
+
+        const average =
+            dailyAverages.length > 0
+                ? dailyAverages.reduce((sum, value) => sum + value, 0) /
+                  dailyAverages.length
+                : fallbackCurrentValue ?? 0;
+
+        this.irradianceDailyAverage = average;
+
+        if (average < this.irradianceThresholds.low) {
+            this.irradianceMood = 'sad';
+            this.irradianceMoodLabel = 'Ruim';
+            return;
+        }
+
+        if (average < this.irradianceThresholds.high) {
+            this.irradianceMood = 'normal';
+            this.irradianceMoodLabel = 'Normal';
+            return;
+        }
+
+        this.irradianceMood = 'happy';
+        this.irradianceMoodLabel = 'Ótima';
     }
 
     // ----------------------------------------------------------------
@@ -685,12 +818,24 @@ export class DashboardSolarplantComponent implements OnInit {
     // ----------------------------------------------------------------
 
     openMetricChart(metric: MetricKey): void {
-        if (!this.selectedDate || !this.selectedPlantId) {
+        if (
+            !this.selectedDate ||
+            !this.selectedEndDate ||
+            !this.selectedPlantId
+        ) {
+            return;
+        }
+
+        const normalizedRange = this.getNormalizedDateRange(
+            this.selectedDate,
+            this.selectedEndDate
+        );
+        if (!normalizedRange) {
             return;
         }
 
         const plantId = this.selectedPlantId;
-        const date = this.selectedDate;
+        const { startDate, endDate } = normalizedRange;
 
         // Mapa com código do campo + visual do gráfico + textos
         const configMap: Record<
@@ -770,7 +915,7 @@ export class DashboardSolarplantComponent implements OnInit {
         this.isLoading = true;
 
         this.dashboardService
-            .getHistoricoMedicao(plantId, date, cfg.code)
+            .getHistoricoMedicao(plantId, startDate, cfg.code, endDate)
             .pipe(
                 finalize(() => {
                     this.isLoading = false;

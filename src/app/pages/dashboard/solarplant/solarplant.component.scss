@@ -57,6 +57,78 @@
   border: 3px dashed rgba(253, 224, 71, 0.9);
 }
 
+.sun-face {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.sun-eye {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(120, 53, 15, 0.75);
+  margin-top: -8px;
+}
+
+.sun-mouth {
+  position: absolute;
+  width: 24px;
+  height: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-color: rgba(120, 53, 15, 0.82);
+  border-style: solid;
+}
+
+.mouth-sad {
+  top: 46px;
+  border-width: 3px 0 0 0;
+  border-radius: 14px 14px 0 0;
+}
+
+.mouth-normal {
+  top: 48px;
+  border-width: 0 0 3px 0;
+  border-radius: 0 0 14px 14px;
+}
+
+.mouth-happy {
+  top: 44px;
+  border-width: 0 0 3px 0;
+  border-radius: 0 0 16px 16px;
+}
+
+.sun-sad .sun-circle {
+  filter: saturate(0.9) brightness(0.95);
+}
+
+.sun-sad .sun-ring {
+  border-color: rgba(251, 191, 36, 0.7);
+}
+
+.sun-normal .sun-circle {
+  filter: saturate(1) brightness(1);
+}
+
+.sun-happy .sun-circle {
+  filter: saturate(1.14) brightness(1.05);
+}
+
+.sun-happy .sun-ring {
+  border-color: rgba(253, 224, 71, 1);
+}
+
+.irradiance-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 /* Condições do ambiente */
 
 .environment-block {
@@ -85,6 +157,53 @@
 
 .irradiance-card {
   min-width: 210px;
+}
+
+.irradiance-daily-status {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  min-width: 210px;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.05);
+}
+
+.status-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.status-value {
+  margin-top: 2px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.status-pill {
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.status-sad .status-pill {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-normal .status-pill {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-happy .status-pill {
+  background: #dcfce7;
+  color: #166534;
 }
 
 .environment-card {
@@ -522,4 +641,3 @@
 .plate-temp-card.metric-clickable {
   position: absolute;
 }
-

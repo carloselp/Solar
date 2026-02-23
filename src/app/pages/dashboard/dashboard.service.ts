@@ -19,40 +19,68 @@ export class DashboardService {
 
     getMedicao(
         solarplantId: number,
-        date: Date | string
+        startDate: Date | string,
+        endDate?: Date | string
     ): Observable<MedicaoItem[]> {
-        const params = new HttpParams()
+        let params = new HttpParams()
             .set('solarplantId', String(solarplantId))
-            .set('startDate', this.formatDateParam(date));
+            .set('startDate', this.formatDateParam(startDate));
+
+        if (endDate) {
+            params = params.set('endDate', this.formatDateParam(endDate));
+        }
 
         return this.http.get<MedicaoItem[]>(`${this.baseUrl}/Medicao`, {params});
     }
 
     getGeracao(
         solarplantId: number,
-        date: Date | string
+        startDate: Date | string,
+        endDate?: Date | string
     ): Observable<TimeSeriesPoint[]> {
-        const params = new HttpParams()
+        let params = new HttpParams()
             .set('solarplantId', String(solarplantId))
-            .set('startDate', this.formatDateParam(date));
+            .set('startDate', this.formatDateParam(startDate));
+
+        if (endDate) {
+            params = params.set('endDate', this.formatDateParam(endDate));
+        }
 
         return this.http.get<TimeSeriesPoint[]>(`${this.baseUrl}/Geracao`, {params});
     }
 
-    getGeracaoXOutraMedida(solarplantId: number, date: Date | string, field: number): Observable<GeneracaoMedicaoItem[]> {
-        const params = new HttpParams()
+    getGeracaoXOutraMedida(
+        solarplantId: number,
+        startDate: Date | string,
+        field: number,
+        endDate?: Date | string
+    ): Observable<GeneracaoMedicaoItem[]> {
+        let params = new HttpParams()
             .set('solarplantId', String(solarplantId))
-            .set('startDate', this.formatDateParam(date))
+            .set('startDate', this.formatDateParam(startDate))
             .set('field', String(field));
+
+        if (endDate) {
+            params = params.set('endDate', this.formatDateParam(endDate));
+        }
 
         return this.http.get<GeneracaoMedicaoItem[]>(`${this.baseUrl}/GeracaoXOutraMedida`, {params});
     }
 
-    getHistoricoMedicao(solarplantId: number, date: Date | string, codigo: number): Observable<HistoricoMedicaoItem[]> {
-        const params = new HttpParams()
+    getHistoricoMedicao(
+        solarplantId: number,
+        startDate: Date | string,
+        codigo: number,
+        endDate?: Date | string
+    ): Observable<HistoricoMedicaoItem[]> {
+        let params = new HttpParams()
             .set('solarplantId', String(solarplantId))
-            .set('startDate', this.formatDateParam(date))
+            .set('startDate', this.formatDateParam(startDate))
             .set('fieldNumber', String(codigo));
+
+        if (endDate) {
+            params = params.set('endDate', this.formatDateParam(endDate));
+        }
 
         return this.http.get<HistoricoMedicaoItem[]>(`${this.baseUrl}/Medicao/Historico`, {params});
     }

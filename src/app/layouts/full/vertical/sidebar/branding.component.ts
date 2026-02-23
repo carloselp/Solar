@@ -13,6 +13,14 @@ import { CoreService } from 'src/app/services/core.service';
       />
     </a>
 
+    <a href="/" class="logo-mini">
+      <img
+        src="./assets/images/logos/light-logo.svg"
+        class="align-middle m-2"
+        alt="logo"
+      />
+    </a>
+
     <a href="/" class="logolight">
       <img
         src="./assets/images/logos/light-logo.svg"
