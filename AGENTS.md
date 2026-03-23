@@ -74,3 +74,7 @@ Aplicação web Angular para monitoramento de usinas solares, com:
 - Se alterar CRUD administrativo, revisar fluxo completo: lista -> diálogo -> service -> feedback (`toastr`).
 - Sempre que surgir conhecimento novo, persistente e útil sobre o projeto, atualizar a documentação correspondente no mesmo fluxo de trabalho, sem depender de solicitação adicional do usuário.
 - Nunca versionar segredos; quando o novo conhecimento envolver credenciais, registrar só o procedimento e manter os valores em arquivos locais ignorados, cofres apropriados ou no servidor.
+- Para credenciais operacionais locais, a ordem padrão de busca deve ser:
+  1. `.env.local`
+  2. `/Users/kaduportugal/Projects/Inovecode/README-LOCAL-ACCESS.md`
+  3. documentação versionada do projeto, sem esperar encontrar o valor secreto nela
