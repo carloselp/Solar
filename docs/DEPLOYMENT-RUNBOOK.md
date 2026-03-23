@@ -17,6 +17,17 @@
   - `DEPLOY_SSH_PRIVATE_KEY`
   - `DEPLOY_SUDO_PASSWORD`
 
+## Organização local recomendada
+
+- arquivo local de referência: `.env.local`
+- chave SSH operacional: `~/.ssh/inovecode_suporte`
+- alias local: `ssh inovecode-prod`
+
+Observações:
+- `.env.local` serve para centralizar dados operacionais locais e não é consumido automaticamente pela aplicação
+- a cópia principal da chave não deve ficar em `Downloads`
+- manter um backup cifrado da chave fora do repositório
+
 ## Fluxo de deploy
 
 1. `npm ci --legacy-peer-deps`
