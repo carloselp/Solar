@@ -1,6 +1,15 @@
 export class AppConstants {
 
-    public static get baseUrl(): string { return "http://45.160.103.198/"}
+    public static get baseUrl(): string {
+        if (typeof window !== 'undefined') {
+            const host = window.location.hostname;
+            if (host === 'localhost' || host === '127.0.0.1') {
+                return 'http://localhost:5000/';
+            }
+        }
+
+        return 'http://45.160.103.198/';
+    }
     public static get baseLogin(): string { return this.baseUrl + 'api/Login/v1' }
     public static get baseUser(): string { return this.baseUrl + 'api/Users/v1' }
     public static get baseSystemProfileUsers(): string { return this.baseUrl + 'api/SystemProfileUsers/v1' }

@@ -50,6 +50,7 @@ Observações:
 - Base atual do frontend: `http://45.160.103.198/`
 - Definida em `src/app/app.constants.ts`
 - Se backend mudar de host, este arquivo e a pipeline devem ser revisados em conjunto
+- Em execução local (`localhost`/`127.0.0.1`), o frontend já aponta automaticamente para `http://localhost:5000/`
 
 ## Validação mínima após deploy
 
