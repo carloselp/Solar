@@ -72,3 +72,5 @@ Aplicação web Angular para monitoramento de usinas solares, com:
 - Manter textos internacionalizados (`pt-BR.json`) quando houver strings de UI.
 - Validar efeitos em autenticação/interceptors ao mexer em chamadas HTTP.
 - Se alterar CRUD administrativo, revisar fluxo completo: lista -> diálogo -> service -> feedback (`toastr`).
+- Sempre que surgir conhecimento novo, persistente e útil sobre o projeto, atualizar a documentação correspondente no mesmo fluxo de trabalho, sem depender de solicitação adicional do usuário.
+- Nunca versionar segredos; quando o novo conhecimento envolver credenciais, registrar só o procedimento e manter os valores em arquivos locais ignorados, cofres apropriados ou no servidor.
