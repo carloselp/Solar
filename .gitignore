@@ -15,6 +15,7 @@ tmp/
 .cache/
 .eslintcache
 .parcel-cache/
+.playwright-cli/
 
 # IDEs
 .vscode/
