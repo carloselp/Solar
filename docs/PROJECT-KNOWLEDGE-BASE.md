@@ -18,6 +18,8 @@ Permitir que qualquer agente execute mudanças com precisão, sem precisar remap
    `docs/AGENT-PLAYBOOK.md`
 5. Checklist de qualidade e validação:
    `docs/CHECKLIST-QUALIDADE.md`
+6. Deploy e operação self-hosted:
+   `docs/DEPLOYMENT-RUNBOOK.md`
 
 ## Snapshot técnico rápido
 
@@ -27,7 +29,7 @@ Permitir que qualquer agente execute mudanças com precisão, sem precisar remap
 - i18n: `@ngx-translate/core` com `pt-BR`
 - Gráficos: ApexCharts
 - Mapa: Leaflet
-- Deploy: Azure Static Web Apps (workflow em `.github/workflows`)
+- Deploy: VPS própria em `45.160.103.198` via GitHub Actions + SSH
 
 ## Arquivos de referência primária
 
@@ -37,6 +39,7 @@ Permitir que qualquer agente execute mudanças com precisão, sem precisar remap
 - Config de API: `src/app/app.constants.ts`
 - Tema/layout: `src/assets/scss/style.scss`
 - Traduções: `src/assets/i18n/pt-BR.json`
+- Deploy: `.github/workflows/azure-static-web-apps-victorious-mud-0d353371e.yml`
 
 ## Princípio de manutenção
 

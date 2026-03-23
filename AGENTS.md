@@ -38,7 +38,8 @@ Aplicação web Angular para monitoramento de usinas solares, com:
 ## 5) API backend (base)
 
 - Definida em: `src/app/app.constants.ts`
-- Base atual: `https://inovecode-back.azurewebsites.net/`
+- Base atual: `http://45.160.103.198/`
+- O frontend e a API rodam no mesmo servidor; rotas `/api/...` passam pelo `nginx`
 
 ## 6) Segurança e sessão
 
@@ -62,6 +63,7 @@ Aplicação web Angular para monitoramento de usinas solares, com:
 - Domínios e APIs: `docs/DOMAINS-API.md`
 - Playbook operacional: `docs/AGENT-PLAYBOOK.md`
 - Checklist de qualidade: `docs/CHECKLIST-QUALIDADE.md`
+- Runbook de deploy self-hosted: `docs/DEPLOYMENT-RUNBOOK.md`
 
 ## 9) Regras práticas para mudanças
 
@@ -70,4 +72,3 @@ Aplicação web Angular para monitoramento de usinas solares, com:
 - Manter textos internacionalizados (`pt-BR.json`) quando houver strings de UI.
 - Validar efeitos em autenticação/interceptors ao mexer em chamadas HTTP.
 - Se alterar CRUD administrativo, revisar fluxo completo: lista -> diálogo -> service -> feedback (`toastr`).
-
