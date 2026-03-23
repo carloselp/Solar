@@ -25,6 +25,7 @@
 
 Observações:
 - `.env.local` serve para centralizar dados operacionais locais e não é consumido automaticamente pela aplicação
+- credenciais operacionais locais, como a senha de `sudo` do usuário `suporte`, devem ficar em `.env.local` ignorado pelo Git
 - a cópia principal da chave não deve ficar em `Downloads`
 - manter um backup cifrado da chave fora do repositório
 
