@@ -1,57 +1,91 @@
-name: Azure Static Web Apps CI/CD
+name: Build And Deploy Frontend
 
 on:
   push:
     branches: [main]
   pull_request:
-    types: [opened, synchronize, reopened, closed]
     branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: solar-frontend-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+  build:
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    permissions:
+      contents: read
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-          lfs: false
+      - uses: actions/checkout@v4
 
-      # Usa Node mais novo (Angular 20 frequentemente prefere Node 20+)
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          cache: npm
 
-      # Instala ignorando conflito de peer deps
       - name: Install deps
         run: npm ci --legacy-peer-deps
 
-      # Build do Angular
       - name: Build
         run: npm run build -- --configuration production
 
-      # Deploy: só upload do dist gerado acima (sem Oryx buildar)
-      - name: Deploy to Azure Static Web Apps
-        uses: Azure/static-web-apps-deploy@v1
+      - name: Package dist
+        run: tar -czf frontend-dist.tgz -C dist/Modernize .
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_VICTORIOUS_MUD_0D353371E }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "dist/Modernize/browser"
-          output_location: ""
-          skip_app_build: true
+          name: frontend-dist
+          path: frontend-dist.tgz
+          if-no-files-found: error
 
-
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
     runs-on: ubuntu-latest
-    name: Close Pull Request Job
+    permissions:
+      contents: read
+    env:
+      DEPLOY_HOST: 45.160.103.198
+      DEPLOY_PORT: "7772"
+      DEPLOY_USER: suporte
+
     steps:
-      - name: Close Pull Request
-        uses: Azure/static-web-apps-deploy@v1
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_VICTORIOUS_MUD_0D353371E }}
-          action: "close"
+          name: frontend-dist
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "$DEPLOY_PORT" "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+
+      - name: Upload release artifact
+        run: scp -P "$DEPLOY_PORT" frontend-dist.tgz "$DEPLOY_USER@$DEPLOY_HOST:/tmp/inovesolar-front-${{ github.sha }}.tgz"
+
+      - name: Deploy to server
+        env:
+          SUDO_PASSWORD: ${{ secrets.DEPLOY_SUDO_PASSWORD }}
+        run: |
+          ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "ARTIFACT=/tmp/inovesolar-front-${{ github.sha }}.tgz SUDO_PASSWORD='$SUDO_PASSWORD' bash -s" <<'EOF'
+          set -euo pipefail
+
+          STAMP=$(date +%Y%m%d%H%M%S)
+          RELEASE_DIR="/var/www/inovesolar-front/releases/$STAMP"
+
+          mkdir -p "$RELEASE_DIR"
+          tar -xzf "$ARTIFACT" -C "$RELEASE_DIR"
+          ln -sfn "$RELEASE_DIR" /var/www/inovesolar-front/current
+          rm -f "$ARTIFACT"
+
+          printf '%s\n' "$SUDO_PASSWORD" | sudo -S nginx -t
+          printf '%s\n' "$SUDO_PASSWORD" | sudo -S systemctl reload nginx
+          EOF

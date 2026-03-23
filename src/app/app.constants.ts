@@ -1,6 +1,6 @@
 export class AppConstants {
 
-    public static get baseUrl(): string { return "https://inovecode-back.azurewebsites.net/"}
+    public static get baseUrl(): string { return "http://45.160.103.198/"}
     public static get baseLogin(): string { return this.baseUrl + 'api/Login/v1' }
     public static get baseUser(): string { return this.baseUrl + 'api/Users/v1' }
     public static get baseSystemProfileUsers(): string { return this.baseUrl + 'api/SystemProfileUsers/v1' }
