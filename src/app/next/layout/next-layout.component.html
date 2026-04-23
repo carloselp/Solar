@@ -1,4 +1,8 @@
-<div class="next-theme next-shell">
+<div
+  class="next-theme next-shell"
+  [class.next-theme--dark]="isDarkTheme()"
+  [class.next-theme--light]="!isDarkTheme()"
+>
   <aside class="next-sidebar">
     <div class="next-brand">
       <div class="next-brand__dot"></div>
@@ -50,6 +54,16 @@
           <span class="next-sync-pill__dot"></span>
           Sincronizado
         </div>
+
+        <button
+          class="next-theme-toggle"
+          type="button"
+          [attr.aria-label]="themeLabel()"
+          [attr.title]="themeLabel()"
+          (click)="toggleTheme()"
+        >
+          <span class="next-theme-toggle__icon">{{ themeIcon() }}</span>
+        </button>
 
         <button class="next-icon-button" type="button" (click)="toggleDropdown()">
           🔔

@@ -3,6 +3,7 @@ import {Component, computed, inject, signal} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router, RouterModule} from '@angular/router';
 import {filter} from 'rxjs/operators';
 import {NotificationDropdownItem, NotificationService} from 'src/app/pages/notification/notification.service';
+import {CoreService} from 'src/app/services/core.service';
 import {NextNavItem, NextPageMeta} from '../shared/next-nav.models';
 import {getNextMenu} from '../shared/next-menu';
 
@@ -20,18 +21,26 @@ interface StoredUser {
     styleUrl: './next-layout.component.scss',
 })
 export class NextLayoutComponent {
+    private static readonly THEME_STORAGE_KEY = 'smartgrid.portal.theme';
+
     private readonly router = inject(Router);
     private readonly route = inject(ActivatedRoute);
     private readonly notificationService = inject(NotificationService);
+    private readonly coreService = inject(CoreService);
 
     readonly navItems = signal<NextNavItem[]>(getNextMenu());
     readonly dropdownOpen = signal(false);
+    readonly isDarkTheme = signal(this.readInitialTheme());
     readonly pageMeta = signal<NextPageMeta>({
         title: 'Dashboard',
         subtitle: 'Visão consolidada do portal SmartGrid.',
     });
     readonly unreadCount = signal(0);
     readonly notifications = signal<NotificationDropdownItem[]>([]);
+    readonly themeIcon = computed(() => (this.isDarkTheme() ? '☀️' : '🌙'));
+    readonly themeLabel = computed(() =>
+        this.isDarkTheme() ? 'Ativar modo claro' : 'Ativar modo escuro'
+    );
 
     readonly groupedNav = computed(() => {
         const map = new Map<string, NextNavItem[]>();
@@ -75,6 +84,16 @@ export class NextLayoutComponent {
             next: () => this.loadNotificationsSummary(),
             error: () => this.loadNotificationsSummary(),
         });
+    }
+
+    toggleTheme(): void {
+        const nextTheme = !this.isDarkTheme();
+        this.isDarkTheme.set(nextTheme);
+        this.coreService.setOptions({theme: nextTheme ? 'dark' : 'light'});
+        localStorage.setItem(
+            NextLayoutComponent.THEME_STORAGE_KEY,
+            nextTheme ? 'dark' : 'light'
+        );
     }
 
     private syncPageMeta(): void {
@@ -131,5 +150,17 @@ export class NextLayoutComponent {
             'US';
 
         return base.toUpperCase();
+    }
+
+    private readInitialTheme(): boolean {
+        const storedTheme = localStorage.getItem(NextLayoutComponent.THEME_STORAGE_KEY);
+        const appTheme = this.coreService.getOptions().theme;
+
+        if (storedTheme === 'dark' || storedTheme === 'light') {
+            this.coreService.setOptions({theme: storedTheme});
+            return storedTheme === 'dark';
+        }
+
+        return appTheme === 'dark';
     }
 }
