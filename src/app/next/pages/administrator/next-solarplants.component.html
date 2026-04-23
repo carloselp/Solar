@@ -20,6 +20,7 @@
         <thead>
           <tr>
             <th>Usina</th>
+            <th>Empresa</th>
             <th>Eficiência</th>
             <th>Coef. temperatura</th>
             <th>Temp. referência</th>
@@ -32,6 +33,7 @@
           @for (plant of filteredPlants; track plant.id) {
             <tr>
               <td><strong>{{ plant.name }}</strong></td>
+              <td>{{ plant.companyName || '-' }}</td>
               <td>{{ plant.efficiency }}</td>
               <td>{{ plant.coef_temp }}</td>
               <td>{{ plant.temp_ref }}</td>
@@ -46,7 +48,7 @@
             </tr>
           } @empty {
             <tr>
-              <td colspan="7">
+              <td colspan="8">
                 <div class="next-empty-state">Nenhuma usina encontrada.</div>
               </td>
             </tr>

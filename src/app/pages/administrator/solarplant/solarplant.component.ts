@@ -18,6 +18,8 @@ import {SolarplantDialogContentComponent} from "./solarplant-dialog-content.comp
 export interface SolarplantModel {
     id: number;
     name: string;
+    companyId?: number | null;
+    companyName?: string;
     efficiency: number;
     coef_temp: number;
     temp_ref: number;
@@ -47,6 +49,7 @@ export class SolarplantComponent extends BaseCrudComponent<SolarplantModel>{
     displayedColumns: string[] = [
         '#',
         'name',
+        'companyName',
         'efficiency',
         'coef_temp',
         'temp_ref',
