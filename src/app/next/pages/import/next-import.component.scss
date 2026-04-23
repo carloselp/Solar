@@ -1,0 +1,15 @@
+.next-import-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.next-import-dropzone {
+  border: 2px dashed var(--next-border-med);
+  border-radius: 16px;
+  padding: 2rem;
+  display: grid;
+  gap: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  background: var(--next-surface-2);
+}

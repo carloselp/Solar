@@ -8,7 +8,10 @@ import {UserModel} from "./user.component";
 import {CoreService} from "../../../services/core.service";
 import {ProfileService} from 'src/app/pages/administrator/profile/profile.service';
 import {ProfileModel} from 'src/app/pages/administrator/profile/profile.component';
+import {CompanyModel} from 'src/app/pages/administrator/company/company.component';
+import {CompanyService} from 'src/app/pages/administrator/company/company.service';
 import {finalize} from "rxjs/operators";
+import {forkJoin} from 'rxjs';
 
 @Component({
     selector: 'app-user-dialog-content',
@@ -26,6 +29,7 @@ export class AppUserDialogContentComponent {
     confirmPassword = '';
 
     profiles: ProfileModel[] = [];
+    companies: CompanyModel[] = [];
     isProfilesLoading = false;
 
     constructor(
@@ -35,6 +39,7 @@ export class AppUserDialogContentComponent {
         private translate: TranslateService,
         private settings: CoreService,
         private profileService: ProfileService,
+        private companyService: CompanyService,
     ) {
         const lang = this.options.language || 'pt-BR';
 
@@ -43,10 +48,6 @@ export class AppUserDialogContentComponent {
 
         this.local_data = {...data};
 
-        if (this.local_data.partnershipId === undefined || this.local_data.partnershipId === null) {
-            this.local_data.partnershipId = 0;
-        }
-
         this.action = this.local_data.action;
 
         if (
@@ -54,6 +55,13 @@ export class AppUserDialogContentComponent {
             this.local_data.profileId === null
         ) {
             this.local_data.profileId = 0;
+        }
+
+        if (
+            this.local_data.companyId === undefined ||
+            this.local_data.companyId === null
+        ) {
+            this.local_data.companyId = 0;
         }
 
         if (this.action !== 'Delete' && this.action !== 'Passkey') {
@@ -65,16 +73,20 @@ export class AppUserDialogContentComponent {
     private loadProfiles(): void {
         this.isProfilesLoading = true;
 
-        this.profileService
-            .getAll()
+        forkJoin({
+            profiles: this.profileService.getAll(),
+            companies: this.companyService.getAll(),
+        })
             .pipe(finalize(() => (this.isProfilesLoading = false)))
             .subscribe({
-                next: (profiles) => {
+                next: ({profiles, companies}) => {
                     this.profiles = profiles ?? [];
+                    this.companies = companies ?? [];
                 },
                 error: (err) => {
-                    console.error('Erro ao carregar perfis', err);
+                    console.error('Erro ao carregar perfis e empresas', err);
                     this.profiles = [];
+                    this.companies = [];
                 },
             });
     }

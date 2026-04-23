@@ -1,0 +1,60 @@
+<div class="next-theme next-auth">
+  <section class="next-auth__left">
+    <div>
+      <div class="next-brand next-brand--login">
+        <div class="next-brand__dot"></div>
+        <div>
+          <div class="next-brand__name">SMARTGRID</div>
+          <div class="next-brand__tag">INOVESOLAR</div>
+        </div>
+      </div>
+
+      <h1 class="next-auth__headline">
+        Monitoramento solar com operação <em>clara, rápida e confiável</em>.
+      </h1>
+      <p class="next-auth__copy">
+        A nova versão do portal organiza dashboard, alertas, gestão administrativa e
+        relatórios em um fluxo único para operação diária.
+      </p>
+
+      <div class="next-auth__feature-list">
+        <div class="next-auth__feature">Alertas e notificações por severidade</div>
+        <div class="next-auth__feature">Dashboard de geração e clima</div>
+        <div class="next-auth__feature">Gestão centralizada de usuários e usinas</div>
+      </div>
+    </div>
+
+    <div class="next-auth__footer">SmartGrid · Portal principal de operação INOVESOLAR</div>
+  </section>
+
+  <section class="next-auth__right">
+    <form class="next-auth__card" [formGroup]="form" (ngSubmit)="submit()">
+      <h2>Acessar plataforma</h2>
+      <p>Use suas credenciais de acesso para entrar no portal principal da operação.</p>
+
+      <label class="next-field">
+        <span>Usuário</span>
+        <input type="text" formControlName="uname" placeholder="Seu login" />
+      </label>
+
+      <label class="next-field">
+        <span>Senha</span>
+        <div class="next-password-field">
+          <input
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="Sua senha"
+          />
+          <button type="button" (click)="hidePassword = !hidePassword">
+            {{ hidePassword ? 'Mostrar' : 'Ocultar' }}
+          </button>
+        </div>
+      </label>
+
+      <button class="next-primary-button" type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Entrando...' : 'Entrar na plataforma' }}
+      </button>
+
+    </form>
+  </section>
+</div>

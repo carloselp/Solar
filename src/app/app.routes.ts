@@ -1,52 +1,47 @@
 import {Routes} from '@angular/router';
-import {BlankComponent} from './layouts/blank/blank.component';
-import {FullComponent} from './layouts/full/full.component';
 import {AuthGuard} from './auth.guard';
+import {NextLayoutComponent} from './next/layout/next-layout.component';
+import {NextLoginComponent} from './next/auth/next-login.component';
 
 export const routes: Routes = [
     {
         path: '',
-        component: FullComponent,
+        pathMatch: 'full',
+        redirectTo: 'dashboard',
+    },
+    {
+        path: 'login',
+        component: NextLoginComponent,
+    },
+    {
+        path: 'authentication/login',
+        redirectTo: 'login',
+        pathMatch: 'full',
+    },
+    {
+        path: 'next/login',
+        redirectTo: 'login',
+        pathMatch: 'full',
+    },
+    {
+        path: 'legacy',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+    },
+    {
+        path: 'next',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+    },
+    {
+        path: '',
+        component: NextLayoutComponent,
         canActivate: [AuthGuard],
         children: [
             {
                 path: '',
-                redirectTo: '/dashboard/solarplant',
-                pathMatch: 'full',
-            },
-            {
-                path: 'administrator',
                 loadChildren: () =>
-                    import('./pages/administrator/administrator.routes').then((m) => m.AdministratorRoutes),
-            },
-            {
-                path: 'dashboard',
-                loadChildren: () =>
-                    import('./pages/dashboard/dashboard.routes').then((m) => m.DashboardRoutes),
-            },
-            { 
-                path: 'notifications', 
-                loadComponent: () => import('./pages/notification/notification.component').then(m => m.NotificationComponent),
-                data: {
-                    title: 'Pages.Alerts',
-                    urls: [
-                        { title: 'Pages.Starter', url: '/dashboard/solarplant' },
-                        { title: 'Pages.Notifications' },
-                    ],
-                },
-            },
-        ],
-    },
-    {
-        path: '',
-        component: BlankComponent,
-        children: [
-            {
-                path: 'authentication',
-                loadChildren: () =>
-                    import('./pages/authentication/authentication.routes').then(
-                        (m) => m.AuthenticationRoutes
-                    ),
+                    import('./next/next.routes').then((m) => m.NextRoutes),
             }
         ],
     },

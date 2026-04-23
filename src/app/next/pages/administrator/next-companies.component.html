@@ -1,0 +1,60 @@
+<section class="next-page">
+  <article class="next-page-card">
+    <div class="next-toolbar">
+      <label class="next-field-inline">
+        <span>Buscar empresa</span>
+        <input type="text" [(ngModel)]="search" placeholder="Nome, documento, cidade ou estado" />
+      </label>
+
+      <button class="next-primary-button" type="button" (click)="openDialog('Add', {})">
+        + Adicionar empresa
+      </button>
+    </div>
+  </article>
+
+  <article class="next-page-card">
+    @if (isLoading) {
+      <div class="next-empty-state">Carregando empresas...</div>
+    } @else {
+      <table class="next-table">
+        <thead>
+          <tr>
+            <th>Empresa</th>
+            <th>CNPJ</th>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (company of filteredCompanies; track company.id) {
+            <tr>
+              <td><strong>{{ company.name }}</strong></td>
+              <td>{{ company.document || '-' }}</td>
+              <td>{{ company.city || '-' }}</td>
+              <td>{{ company.state || '-' }}</td>
+              <td>
+                <span class="next-status" [class]="'next-status--' + statusClass(company.status)">
+                  {{ statusLabel(company.status) }}
+                </span>
+              </td>
+              <td>
+                <div class="next-table__actions">
+                  <button class="next-table__icon" type="button" (click)="openDialog('Update', company)">✏️</button>
+                  <button class="next-table__icon" type="button" (click)="openDialog('Delete', company)">🗑️</button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">
+                <div class="next-empty-state">Nenhuma empresa encontrada.</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </article>
+</section>

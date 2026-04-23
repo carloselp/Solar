@@ -1,0 +1,46 @@
+<section class="next-page">
+  <article class="next-page-card">
+    <div class="next-toolbar">
+      <div class="next-inline-filters">
+        <label class="next-field-inline">
+          <span>Usina</span>
+          <select [(ngModel)]="selectedPlantId">
+            @for (plant of plants; track plant.id) {
+              <option [ngValue]="plant.id">{{ plant.name }}</option>
+            }
+          </select>
+        </label>
+        <label class="next-field-inline">
+          <span>Início</span>
+          <input type="date" [(ngModel)]="startDate" />
+        </label>
+        <label class="next-field-inline">
+          <span>Fim</span>
+          <input type="date" [(ngModel)]="endDate" />
+        </label>
+      </div>
+
+      <div class="next-toolbar__actions">
+        <button class="next-secondary-button" type="button" (click)="generate()">Atualizar</button>
+        <button class="next-primary-button" type="button" (click)="exportCsv()">Exportar CSV</button>
+      </div>
+    </div>
+  </article>
+
+  <article class="next-page-card">
+    @if (isLoading) {
+      <div class="next-empty-state">Gerando relatório consolidado...</div>
+    } @else {
+      <div class="next-grid next-grid--2">
+        @for (item of summary; track item.label) {
+          <div class="next-page-card next-kpi">
+            <div class="next-kpi__label">{{ item.label }}</div>
+            <div class="next-kpi__value">{{ item.value }}</div>
+          </div>
+        } @empty {
+          <div class="next-empty-state">Nenhum dado disponível para o relatório.</div>
+        }
+      </div>
+    }
+  </article>
+</section>

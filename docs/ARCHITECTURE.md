@@ -3,8 +3,7 @@
 ## 1. Visão de alto nível
 
 Aplicação SPA Angular com dois contextos de layout:
-- `Blank`: autenticação e páginas públicas
-- `Full`: aplicação autenticada (dashboard, administração, notificações)
+- `Next`: shell autenticado principal do portal
 
 A aplicação é bootstrapada via `bootstrapApplication` com `ApplicationConfig` (standalone, sem `AppModule`).
 
@@ -28,16 +27,14 @@ Providers centrais:
 Arquivo principal: `src/app/app.routes.ts`
 
 Estratégia:
-- rota raiz com `FullComponent` protegida por `AuthGuard`
-- lazy loading para `administrator` e `dashboard`
-- rota standalone para `notifications`
-- layout `BlankComponent` para `authentication/login`
+- rota raiz autenticada usa `NextLayoutComponent`
+- layout público usa `NextLoginComponent` em `/login`
+- páginas principais ficam sem prefixo adicional (`/dashboard`, `/notifications`, `/administrator/...`)
+- redirects mantidos apenas para compatibilidade temporária de `/next/login` e `/authentication/login`
 - fallback `notfound` + wildcard
 
 Rotas de domínio:
-- `src/app/pages/administrator/administrator.routes.ts`
-- `src/app/pages/dashboard/dashboard.routes.ts`
-- `src/app/pages/authentication/authentication.routes.ts`
+- `src/app/next/next.routes.ts`
 
 ## 4. Segurança, sessão e autorização
 
@@ -77,6 +74,7 @@ Padrão por entidade:
 
 Domínios que seguem esse padrão:
 - Usuários
+- Empresas
 - Perfis
 - Páginas
 - Usinas
@@ -109,7 +107,7 @@ Fallback SPA:
 ## 9. Pontos de atenção arquitetural
 
 - API base está hardcoded em `AppConstants`.
-- Menu lateral real vem de `localStorage.menu`; `sidebar-data.ts` é fallback.
-- Projeto mescla dados reais e alguns blocos herdados do template base.
+- Menu lateral real vem de `localStorage.menu`; `next/shared/next-menu.ts` faz fallback e normalização.
 - Há forte acoplamento de sessão ao `localStorage`.
-
+- O shell novo é agora a aplicação principal e usa o feed de notificações no topo.
+- `Minha Conta` usa backend real para perfil/preferências, mas empresa é somente leitura e depende do vínculo `user.company_id`.

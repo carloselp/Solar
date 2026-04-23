@@ -21,6 +21,8 @@ export interface SolarplantModel {
     efficiency: number;
     coef_temp: number;
     temp_ref: number;
+    latitude?: number | null;
+    longitude?: number | null;
 }
 @Component({
   templateUrl: './solarplant.component.html',
@@ -48,6 +50,8 @@ export class SolarplantComponent extends BaseCrudComponent<SolarplantModel>{
         'efficiency',
         'coef_temp',
         'temp_ref',
+        'latitude',
+        'longitude',
         'action',
     ];
 

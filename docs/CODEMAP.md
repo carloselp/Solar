@@ -29,38 +29,34 @@
 ### Reutilização
 - `shared/base-crud.component.ts`: base para CRUD de tabela/dialog.
 
-## 4. Layouts
+## 4. Layout
 
-- `layouts/full/*`: shell autenticado (header/sidebar/breadcrumb/customizer).
-- `layouts/blank/*`: shell de autenticação.
-
-Observação:
-- Menu vertical default em `layouts/full/vertical/sidebar/sidebar-data.ts`, porém menu real pode vir de `localStorage`.
+- `next/layout/*`: shell autenticado principal.
+- `next/shared/*`: modelos e normalização do menu principal.
 
 ## 5. Páginas por domínio
 
 ### Authentication
 - `pages/authentication/auth.service.ts`
-- `pages/authentication/side-login/*`
-- `pages/authentication/authentication.routes.ts`
+- `pages/authentication/models/side-login.auth.ts`
+- `next/auth/*`
 
 ### Dashboard
 - `pages/dashboard/dashboard.service.ts`
 - `pages/dashboard/models/dashboard.models.ts`
-- `pages/dashboard/solarplant/*`
-- `pages/dashboard/metricchartdialog/*`
-- `pages/dashboard/dashboard.routes.ts`
+- `next/pages/dashboard/*`
 
 ### Administrator
-- `pages/administrator/administrator.routes.ts`
 - `pages/administrator/user/*`
 - `pages/administrator/profile/*`
 - `pages/administrator/page/*`
 - `pages/administrator/solarplant/*`
+- `pages/administrator/company/*`
+- `next/pages/administrator/*`
 
 ### Notification
 - `pages/notification/notification.service.ts`
-- `pages/notification/notification.component.ts`
+- `next/pages/notifications/*`
 
 ### Error
 - `pages/error/error.component.ts`
@@ -80,4 +76,3 @@ Observação:
 - Erro 401/403 global: `src/app/interceptors/global-error.interceptor.ts`
 - Erro em CRUDs: `src/app/shared/base-crud.component.ts` + serviço do domínio
 - Erro de tema: `src/assets/scss/style.scss` + `src/app/services/core.service.ts`
-

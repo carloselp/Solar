@@ -72,6 +72,6 @@ export class AuthService {
         localStorage.removeItem('menu');
 
         this.currentUserIdSubject.next(null);
-        this.router.navigate(['/authentication/login']);
+        this.router.navigate(['/login']);
     }
 }

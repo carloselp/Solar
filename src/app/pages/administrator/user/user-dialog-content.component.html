@@ -84,6 +84,28 @@
                     </div>
                     <div class="col-lg-6">
                         <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
+                            {{ 'Common.Company' | translate }}
+                        </mat-label>
+
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-select
+                                    id="companyId"
+                                    name="companyId"
+                                    [(ngModel)]="local_data.companyId"
+                            >
+                                <mat-option [value]="0">[Selecione]</mat-option>
+
+                                @for (company of companies; track company.id) {
+                                    <mat-option [value]="company.id">
+                                        {{ company.name }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <mat-label class="f-s-14 f-w-600 m-b-8 d-block">
                             {{ 'Common.Profile' | translate }}
                         </mat-label>
 
@@ -104,7 +126,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <mat-label class="f-s-14 f-w-600 m-b-8 d-block">Status</mat-label>
                         <mat-slide-toggle
                                 color="primary"

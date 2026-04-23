@@ -4,7 +4,7 @@ export class AppConstants {
         if (typeof window !== 'undefined') {
             const host = window.location.hostname;
             if (host === 'localhost' || host === '127.0.0.1') {
-                return 'http://localhost:5000/';
+                return 'http://localhost:5002/';
             }
         }
 
@@ -17,6 +17,7 @@ export class AppConstants {
     public static get baseSystemPages(): string { return this.baseUrl + 'api/SystemPages/v1' }
     public static get baseSystemPageProfiles(): string { return this.baseUrl + 'api/SystemPageProfiles/v1' }
     public static get baseSystemProfiles(): string { return this.baseUrl + 'api/SystemProfiles/v1' }
+    public static get baseSystemCompanies(): string { return this.baseUrl + 'api/SystemCompanies/v1' }
     public static get baseSolarPlant(): string { return this.baseUrl + 'api/SystemSolarplants/v1' }
     public static get baseSolarInverter(): string { return this.baseUrl + 'api/SystemSolarinverters/v1' }
     public static get baseDashboardSolarplant(): string { return this.baseUrl + 'api/Dashboard/Solarplant/v1' }

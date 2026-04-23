@@ -1,0 +1,218 @@
+<section class="next-page next-dashboard-page">
+  <div class="next-dashboard-filters">
+    <div class="next-dashboard-filters__label">☀️ Usina</div>
+
+    <select class="next-dashboard-control next-dashboard-control--plant" [(ngModel)]="selectedPlantId" (change)="applyFilters()">
+      @for (plant of plants; track plant.id) {
+        <option [ngValue]="plant.id">📋 {{ plant.name }}</option>
+      }
+    </select>
+
+    <div class="next-dashboard-divider"></div>
+
+    <div class="next-dashboard-filters__label">Período</div>
+
+    <div class="next-period-group">
+      @for (period of periodPresets; track period.id) {
+        <button
+          class="next-period-chip"
+          type="button"
+          [class.active]="activePeriod === period.id"
+          (click)="setPeriod(period.id)"
+        >
+          {{ period.label }}
+        </button>
+      }
+    </div>
+
+    <div class="next-custom-dates">
+      <div class="next-dashboard-filters__label">De</div>
+      <input
+        class="next-dashboard-control next-dashboard-control--date"
+        type="date"
+        [(ngModel)]="selectedStartDate"
+        (change)="markCustomPeriod()"
+      />
+
+      <div class="next-dashboard-filters__label">Até</div>
+      <input
+        class="next-dashboard-control next-dashboard-control--date"
+        type="date"
+        [(ngModel)]="selectedEndDate"
+        (change)="markCustomPeriod()"
+      />
+    </div>
+
+    <button class="next-filter-button next-filter-button--primary" type="button" (click)="applyFilters()">
+      Buscar
+    </button>
+    <button class="next-filter-button next-filter-button--secondary" type="button" (click)="clearFilters()">
+      ↺ Limpar
+    </button>
+
+    @if (isLoading) {
+      <span class="next-dashboard-loading">Atualizando...</span>
+    }
+  </div>
+
+  @if (isLoading && !energySeriesCount) {
+    <div class="next-page-card next-empty-state">Carregando indicadores do dashboard...</div>
+  } @else {
+    <div class="next-metrics-grid">
+      @for (kpi of kpis; track kpi.label) {
+        <article class="next-metric" [style.--m-color]="kpi.color">
+          <div class="next-metric__icon">{{ kpi.icon }}</div>
+          <div class="next-metric__label">{{ kpi.label }}</div>
+          <div class="next-metric__value">
+            <span>{{ kpi.value }}</span>
+            <span class="next-metric__unit">{{ kpi.unit }}</span>
+          </div>
+          <div class="next-metric__trend" [class]="kpi.trendClass">{{ kpi.trend }}</div>
+        </article>
+      }
+    </div>
+
+    <article class="next-chart-full" data-chart-id="energy">
+      <div class="next-chart-header">
+        <div>
+          <h3>Produção de Energia — {{ selectedPlantName }}</h3>
+          <p>MWh · {{ energySeriesCount }} registros no período · {{ dateRangeLabel }}</p>
+        </div>
+        <div class="next-chart-actions">
+          <button type="button" (click)="downloadChart('energy', 'png')">PNG</button>
+          <button type="button" (click)="downloadChart('energy', 'svg')">SVG</button>
+          <button type="button" (click)="downloadChart('energy', 'csv')">CSV</button>
+        </div>
+      </div>
+
+      <apx-chart
+        [series]="productionChart.series"
+        [chart]="productionChart.chart"
+        [xaxis]="productionChart.xaxis"
+        [yaxis]="productionChart.yaxis"
+        [stroke]="productionChart.stroke"
+        [tooltip]="productionChart.tooltip"
+        [legend]="productionChart.legend"
+        [dataLabels]="productionChart.dataLabels"
+        [colors]="productionChart.colors"
+        [fill]="productionChart.fill"
+        [grid]="productionChart.grid"
+        [plotOptions]="productionChart.plotOptions"
+      ></apx-chart>
+    </article>
+
+    <div class="next-charts-grid">
+      <article class="next-chart-card" data-chart-id="current">
+        <div class="next-chart-header">
+          <div>
+            <h3>Geração × Corrente</h3>
+            <p>MWh vs A</p>
+          </div>
+          <div class="next-chart-actions">
+            <button type="button" (click)="downloadChart('current', 'png')">PNG</button>
+            <button type="button" (click)="downloadChart('current', 'svg')">SVG</button>
+            <button type="button" (click)="downloadChart('current', 'csv')">CSV</button>
+          </div>
+        </div>
+        <apx-chart
+          [series]="currentChart.series"
+          [chart]="currentChart.chart"
+          [xaxis]="currentChart.xaxis"
+          [yaxis]="currentChart.yaxis"
+          [stroke]="currentChart.stroke"
+          [tooltip]="currentChart.tooltip"
+          [legend]="currentChart.legend"
+          [dataLabels]="currentChart.dataLabels"
+          [colors]="currentChart.colors"
+          [fill]="currentChart.fill"
+          [grid]="currentChart.grid"
+          [plotOptions]="currentChart.plotOptions"
+        ></apx-chart>
+      </article>
+
+      <article class="next-chart-card" data-chart-id="voltage">
+        <div class="next-chart-header">
+          <div>
+            <h3>Geração × Tensão</h3>
+            <p>MWh vs V</p>
+          </div>
+          <div class="next-chart-actions">
+            <button type="button" (click)="downloadChart('voltage', 'png')">PNG</button>
+            <button type="button" (click)="downloadChart('voltage', 'svg')">SVG</button>
+            <button type="button" (click)="downloadChart('voltage', 'csv')">CSV</button>
+          </div>
+        </div>
+        <apx-chart
+          [series]="voltageChart.series"
+          [chart]="voltageChart.chart"
+          [xaxis]="voltageChart.xaxis"
+          [yaxis]="voltageChart.yaxis"
+          [stroke]="voltageChart.stroke"
+          [tooltip]="voltageChart.tooltip"
+          [legend]="voltageChart.legend"
+          [dataLabels]="voltageChart.dataLabels"
+          [colors]="voltageChart.colors"
+          [fill]="voltageChart.fill"
+          [grid]="voltageChart.grid"
+          [plotOptions]="voltageChart.plotOptions"
+        ></apx-chart>
+      </article>
+
+      <article class="next-chart-card" data-chart-id="temperature">
+        <div class="next-chart-header">
+          <div>
+            <h3>Geração × Temperatura Ambiente</h3>
+            <p>MWh e °C ao longo do período</p>
+          </div>
+          <div class="next-chart-actions">
+            <button type="button" (click)="downloadChart('temperature', 'png')">PNG</button>
+            <button type="button" (click)="downloadChart('temperature', 'svg')">SVG</button>
+            <button type="button" (click)="downloadChart('temperature', 'csv')">CSV</button>
+          </div>
+        </div>
+        <apx-chart
+          [series]="temperatureChart.series"
+          [chart]="temperatureChart.chart"
+          [xaxis]="temperatureChart.xaxis"
+          [yaxis]="temperatureChart.yaxis"
+          [stroke]="temperatureChart.stroke"
+          [tooltip]="temperatureChart.tooltip"
+          [legend]="temperatureChart.legend"
+          [dataLabels]="temperatureChart.dataLabels"
+          [colors]="temperatureChart.colors"
+          [fill]="temperatureChart.fill"
+          [grid]="temperatureChart.grid"
+          [plotOptions]="temperatureChart.plotOptions"
+        ></apx-chart>
+      </article>
+
+      <article class="next-chart-card" data-chart-id="irradiance">
+        <div class="next-chart-header">
+          <div>
+            <h3>Irradiação Diária</h3>
+            <p>W/m² · {{ dateRangeLabel }}</p>
+          </div>
+          <div class="next-chart-actions">
+            <button type="button" (click)="downloadChart('irradiance', 'png')">PNG</button>
+            <button type="button" (click)="downloadChart('irradiance', 'svg')">SVG</button>
+            <button type="button" (click)="downloadChart('irradiance', 'csv')">CSV</button>
+          </div>
+        </div>
+        <apx-chart
+          [series]="irradianceChart.series"
+          [chart]="irradianceChart.chart"
+          [xaxis]="irradianceChart.xaxis"
+          [yaxis]="irradianceChart.yaxis"
+          [stroke]="irradianceChart.stroke"
+          [tooltip]="irradianceChart.tooltip"
+          [legend]="irradianceChart.legend"
+          [dataLabels]="irradianceChart.dataLabels"
+          [colors]="irradianceChart.colors"
+          [fill]="irradianceChart.fill"
+          [grid]="irradianceChart.grid"
+          [plotOptions]="irradianceChart.plotOptions"
+        ></apx-chart>
+      </article>
+    </div>
+  }
+</section>

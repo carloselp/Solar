@@ -1,0 +1,168 @@
+<section class="next-notifications-page">
+  <div class="next-notifications-head">
+    <button
+      class="next-notifications-button next-notifications-button--secondary"
+      type="button"
+      (click)="markAllAsRead()"
+    >
+      Marcar todas como lidas
+    </button>
+  </div>
+
+  <article class="next-notifications-card next-notifications-filters">
+    <div class="next-filter-row">
+      <div class="next-filter-label">☀️ Usina</div>
+      <select class="next-filter-input" [(ngModel)]="selectedPlantId" (change)="loadNotifications()">
+        @for (plant of plants; track plant.id) {
+          <option [ngValue]="plant.id">{{ plant.name }}</option>
+        }
+      </select>
+
+      <div class="next-filter-label">Período</div>
+      <input
+        class="next-filter-input"
+        type="date"
+        [(ngModel)]="startDate"
+        (change)="loadNotifications()"
+      />
+      <div class="next-filter-label">até</div>
+      <input
+        class="next-filter-input"
+        type="date"
+        [(ngModel)]="endDate"
+      />
+
+      <div class="next-filter-label">Tipo</div>
+      <select class="next-filter-input" [(ngModel)]="selectedType">
+        <option value="">Todos os tipos</option>
+        @for (type of types; track type) {
+          <option [value]="type">{{ type }}</option>
+        }
+      </select>
+
+      <div class="next-filter-label">Severidade</div>
+      <select class="next-filter-input" [(ngModel)]="selectedSeverity">
+        <option value="">Todas</option>
+        <option value="critical">Crítico</option>
+        <option value="high">Alto</option>
+        <option value="medium">Médio</option>
+        <option value="low">Baixo</option>
+      </select>
+
+      <button
+        class="next-notifications-button next-notifications-button--primary"
+        type="button"
+        (click)="loadNotifications()"
+      >
+        Filtrar
+      </button>
+    </div>
+  </article>
+
+  <div class="next-summary-grid">
+    @for (counter of counters; track counter.label) {
+      <article class="next-summary-card">
+        <span class="next-severity-pill" [class]="'next-severity-pill--' + counter.className">
+          {{ counter.label }}
+        </span>
+        <strong
+          class="next-summary-card__count"
+          [class]="'next-summary-card__count--' + counter.className"
+        >
+          {{ counter.total }}
+        </strong>
+        <span class="next-summary-card__label">
+          alertas {{ counter.label.toLowerCase() }}s
+        </span>
+      </article>
+    }
+  </div>
+
+  <div class="next-content-grid">
+    <section class="next-events-column">
+      <div class="next-events-head">
+        <div class="next-events-title">Eventos recentes</div>
+        <button
+          class="next-notifications-button next-notifications-button--secondary"
+          type="button"
+        >
+          Ver todos
+        </button>
+      </div>
+
+      <div class="next-alert-list">
+        @if (isLoading) {
+          <div class="next-empty-state next-alert-empty">
+            Carregando notificações...
+          </div>
+        } @else if (visibleNotifications.length === 0) {
+          <div class="next-empty-state next-alert-empty">
+            Nenhum alerta encontrado para os filtros selecionados.
+          </div>
+        } @else {
+          @for (item of visibleNotifications; track item.titulo + item.createdAt) {
+            <article class="next-alert-item" [class]="'next-alert-item--' + borderClass(item)">
+              <div class="next-alert-item__icon" [class]="'next-alert-item__icon--' + alertIconClass(item)">
+                {{ alertIcon(item) }}
+              </div>
+
+              <div class="next-alert-item__body">
+                <h4>{{ item.titulo }}</h4>
+                <p>{{ item.descricao }}</p>
+
+                <div class="next-alert-item__meta">
+                  <span class="next-severity-pill" [class]="'next-severity-pill--' + item.severidade">
+                    {{ severityLabel(item.severidade) }}
+                  </span>
+                  <span>🕐 {{ item.createdAt | date: 'dd MMM · HH:mm' }}</span>
+                  <span>☀️ {{ item.usina }}</span>
+                </div>
+              </div>
+            </article>
+          }
+        }
+      </div>
+    </section>
+
+    <aside class="next-side-column">
+      <article class="next-notifications-card next-legend-card">
+        <div class="next-legend-title">Legenda de Severidades</div>
+
+        <div class="next-legend-list">
+          <div class="next-legend-row">
+            <span class="next-severity-pill next-severity-pill--critical">Crítico</span>
+            <span class="next-legend-copy">Ação imediata · impacto severo</span>
+          </div>
+          <div class="next-legend-row">
+            <span class="next-severity-pill next-severity-pill--high">Alto</span>
+            <span class="next-legend-copy">Resposta em 4h · monit. intensivo</span>
+          </div>
+          <div class="next-legend-row">
+            <span class="next-severity-pill next-severity-pill--medium">Médio</span>
+            <span class="next-legend-copy">Resposta em 24h · acompanhar</span>
+          </div>
+          <div class="next-legend-row">
+            <span class="next-severity-pill next-severity-pill--low">Baixo</span>
+            <span class="next-legend-copy">Informativo · sem impacto imediato</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="next-notifications-card next-map-card">
+        <div class="next-map-card__head">
+          <div class="next-events-title">Localização da Usina</div>
+          <span class="next-map-status">● Online</span>
+        </div>
+
+        <div class="next-map">
+          <div
+            leaflet
+            [leafletOptions]="mapOptions"
+            [leafletLayers]="mapLayers"
+            class="next-map__host"
+          ></div>
+        </div>
+      </article>
+    </aside>
+  </div>
+</section>

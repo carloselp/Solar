@@ -1,1 +1,13 @@
-<router-outlet></router-outlet>
+<div class="app-shell" [class.app-shell--loading]="httpLoadingService.isLoading()">
+    <router-outlet></router-outlet>
+</div>
+
+<div class="app-loading-overlay" *ngIf="httpLoadingService.isLoading()">
+    <div class="app-loading-modal">
+        <div class="app-loading-spinner" aria-hidden="true"></div>
+        <div class="app-loading-title">Carregando</div>
+        <div class="app-loading-text">
+            Aguarde enquanto o sistema conclui a operação.
+        </div>
+    </div>
+</div>

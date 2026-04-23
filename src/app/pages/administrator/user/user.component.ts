@@ -29,6 +29,8 @@ export interface UserModel {
     profileUserId: number;
     profileId: number;
     profileName: string;
+    companyId?: number | null;
+    companyName: string;
 }
 
 export interface UserProfileModel {
@@ -62,6 +64,7 @@ export class UserComponent extends BaseCrudComponent<UserModel> {
         'name',
         'email',
         'mobile',
+        'companyName',
         'profileName',
         'status',
         'action',

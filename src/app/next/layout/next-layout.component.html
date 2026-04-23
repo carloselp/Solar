@@ -1,0 +1,96 @@
+<div class="next-theme next-shell">
+  <aside class="next-sidebar">
+    <div class="next-brand">
+      <div class="next-brand__dot"></div>
+      <div>
+        <div class="next-brand__name">SMARTGRID</div>
+        <div class="next-brand__tag">INOVESOLAR</div>
+      </div>
+    </div>
+
+    <nav class="next-sidebar__nav">
+      @for (group of groupedNav(); track group.group) {
+        <div class="next-sidebar__section">{{ group.group }}</div>
+        @for (item of group.items; track item.route) {
+          <a
+            [routerLink]="item.route"
+            class="next-nav-item"
+            [class.active]="isRouteActive(item.route)"
+          >
+            <span class="next-nav-item__icon">{{ item.icon }}</span>
+            <span>{{ item.label }}</span>
+            @if (item.badge) {
+              <span class="next-nav-item__badge">{{ item.badge }}</span>
+            }
+          </a>
+        }
+      }
+    </nav>
+
+    <div class="next-sidebar__user">
+      <a class="next-user-card" routerLink="/account">
+        <div class="next-user-card__avatar">{{ userInitials }}</div>
+        <div>
+          <div class="next-user-card__name">{{ userName }}</div>
+          <div class="next-user-card__role">Operação SmartGrid</div>
+        </div>
+      </a>
+    </div>
+  </aside>
+
+  <div class="next-main">
+    <header class="next-topbar">
+      <div>
+        <div class="next-topbar__title">{{ pageMeta().title }}</div>
+        <div class="next-topbar__subtitle">{{ pageMeta().subtitle }}</div>
+      </div>
+
+      <div class="next-topbar__actions">
+        <div class="next-sync-pill">
+          <span class="next-sync-pill__dot"></span>
+          Sincronizado
+        </div>
+
+        <button class="next-icon-button" type="button" (click)="toggleDropdown()">
+          🔔
+          @if (unreadCount() > 0) {
+            <span class="next-icon-button__badge">{{ unreadCount() }}</span>
+          }
+        </button>
+
+        @if (dropdownOpen()) {
+          <div class="next-dropdown">
+            <div class="next-dropdown__header">
+              <span>Notificações</span>
+              <button type="button" class="next-dropdown__link" (click)="markAllRead()">
+                Marcar todas como lidas
+              </button>
+            </div>
+
+            @if (notifications().length === 0) {
+              <div class="next-dropdown__empty">Nenhuma notificação recente.</div>
+            } @else {
+              @for (notification of notifications(); track notification.id) {
+                <div class="next-dropdown__item">
+                  <span class="next-dropdown__dot" [class]="'is-' + notification.severity"></span>
+                  <div>
+                    <div class="next-dropdown__text">{{ notification.text }}</div>
+                    <div class="next-dropdown__time">{{ notification.time }} · {{ notification.usina }}</div>
+                  </div>
+                </div>
+              }
+            }
+
+            <a routerLink="/notifications" class="next-dropdown__footer">
+              Ver central de notificações
+            </a>
+          </div>
+        }
+      </div>
+    </header>
+
+    <main class="next-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

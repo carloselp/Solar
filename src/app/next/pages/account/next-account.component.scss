@@ -1,0 +1,273 @@
+.next-account-page {
+  gap: 1rem;
+}
+
+.next-account-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.next-account-sidebar,
+.next-account-content {
+  border: 1px solid var(--next-border);
+  border-radius: 18px;
+  background: var(--next-surface);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+}
+
+.next-account-sidebar {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.next-account-hero {
+  padding: 1.2rem 1rem;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top right, rgba(234, 88, 12, 0.16), transparent 34%),
+    linear-gradient(180deg, #272a35 0%, #1e212b 100%);
+  color: #fff;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.next-account-avatar {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 0.85rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.next-account-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.next-account-role {
+  margin-top: 0.2rem;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.next-account-badge {
+  margin-top: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.18);
+  color: #9ee6b2;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.next-account-badge--soft {
+  margin-top: 0;
+  background: #edfdf2;
+  color: #1d8348;
+}
+
+.next-account-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 0;
+  background: transparent;
+  border-radius: 12px;
+  color: var(--next-text-2);
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.82rem 0.9rem;
+  text-align: left;
+  transition: 0.15s ease;
+}
+
+.next-account-menu-item:hover,
+.next-account-menu-item.active {
+  background: #f7f8fb;
+  color: var(--next-text);
+}
+
+.next-account-menu-item.active {
+  box-shadow: inset 2px 0 0 var(--next-solar);
+}
+
+.next-account-menu-item--danger {
+  margin-top: 0.35rem;
+  color: #c0392b;
+}
+
+.next-account-content {
+  padding: 1.5rem;
+}
+
+.next-account-section h3 {
+  margin: 0 0 1.15rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.next-account-field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.next-account-field {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.next-account-field span {
+  color: var(--next-text-2);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.next-account-field input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid var(--next-border-med);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--next-text);
+  font-size: 0.92rem;
+  font-weight: 600;
+  outline: none;
+  padding: 0 0.9rem;
+}
+
+.next-account-field input:focus,
+.next-account-password button:focus-visible,
+.next-account-primary:focus-visible,
+.next-account-secondary:focus-visible {
+  border-color: var(--next-solar);
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.12);
+}
+
+.next-account-password {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.65rem;
+}
+
+.next-account-password button,
+.next-account-primary,
+.next-account-secondary {
+  height: 44px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.next-account-password button {
+  border: 1px solid var(--next-border-med);
+  background: #fff;
+  color: var(--next-text-2);
+  padding: 0 0.95rem;
+}
+
+.next-account-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.next-account-primary {
+  border: 0;
+  background: linear-gradient(180deg, #fb6a14 0%, #ea580c 100%);
+  color: #fff;
+  padding: 0 1.2rem;
+  box-shadow: 0 10px 20px rgba(234, 88, 12, 0.16);
+}
+
+.next-account-secondary {
+  border: 1px solid var(--next-border-med);
+  background: #fff;
+  color: var(--next-text);
+  padding: 0 1.2rem;
+}
+
+.next-toggle-row,
+.next-security-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--next-border);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.next-toggle-row + .next-toggle-row,
+.next-security-box + .next-security-box {
+  margin-top: 0.85rem;
+}
+
+.next-toggle-row__title {
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.next-toggle-row__subtitle,
+.next-security-box p {
+  margin: 0.2rem 0 0;
+  color: var(--next-text-3);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.next-toggle-row input[type='checkbox'] {
+  width: 44px;
+  height: 24px;
+  accent-color: var(--next-solar);
+}
+
+.next-security-box strong {
+  font-size: 0.94rem;
+}
+
+@media (max-width: 1024px) {
+  .next-account-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .next-account-content {
+    padding: 1rem;
+  }
+
+  .next-account-field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .next-account-password,
+  .next-toggle-row,
+  .next-security-box {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -1,5 +1,6 @@
 import {
     ApplicationConfig,
+    LOCALE_ID,
     provideZoneChangeDetection,
     importProvidersFrom,
 } from '@angular/core';
@@ -25,6 +26,7 @@ import { provideToastr } from 'ngx-toastr';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthHeaderInterceptor } from './interceptors/auth-header.interceptor';
 import { GlobalErrorInterceptor } from './interceptors/global-error.interceptor';
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
 
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatDateFormats, provideNativeDateAdapter } from '@angular/material/core';
 
@@ -88,6 +90,7 @@ export const appConfig: ApplicationConfig = {
         provideHttpClient(withInterceptorsFromDi()),
         provideClientHydration(),
         provideAnimationsAsync(),
+        { provide: LOCALE_ID, useValue: 'pt-BR' },
         { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
         { provide: MAT_DATE_FORMATS, useValue: BR_DATE_FORMATS },
         importProvidersFrom(
@@ -113,6 +116,11 @@ export const appConfig: ApplicationConfig = {
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthHeaderInterceptor,
+            multi: true,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LoadingInterceptor,
             multi: true,
         },
         {

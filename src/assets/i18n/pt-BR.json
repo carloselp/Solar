@@ -6,6 +6,7 @@
     "Starter": "Início",
     "Administrator": "Administrador",
     "User": "Usuário",
+    "Company": "Empresa",
     "Solarplant": "Usina",
     "Profile": "Perfil",
     "Page": "Página",
@@ -84,7 +85,8 @@
     "SessionExpiredTitle": "Sessão expirada",
     "SessionExpiredMessage": "Sua sessão expirou. Faça login novamente.",
     "Unsuccessful": "Operação não realizada.",
-    "Profile": "Perfil"
+    "Profile": "Perfil",
+    "Company": "Empresa"
   },
   "Validation": {
     "PasswordsMustMatch": "Senha e confirmação de senha não são iguais."
@@ -92,7 +94,9 @@
   "SolarplantPage": {
     "Efficiency" : "Eficiência",
     "CoefTemp": "Coeficiente Temperatura",
-    "TempRef": "Referência Temperatura"
+    "TempRef": "Referência Temperatura",
+    "Latitude": "Latitude",
+    "Longitude": "Longitude"
   },
   "ProfilePage": {
     "CountPages": "Páginas Vinculadas",
@@ -104,5 +108,10 @@
     "Route": "Rota",
     "Icon": "Ícone",
     "Group": "Grupo"
+  },
+  "CompanyPage": {
+    "Document": "CNPJ",
+    "City": "Cidade",
+    "State": "Estado"
   }
 }

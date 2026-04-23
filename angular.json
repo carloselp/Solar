@@ -30,6 +30,7 @@
 
               "src/styles.scss",
               "src/assets/scss/style.scss",
+              "src/assets/scss/next-portal.scss",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/angular-calendar/css/angular-calendar.css",
               "node_modules/highlight.js/styles/atom-one-dark.min.css",

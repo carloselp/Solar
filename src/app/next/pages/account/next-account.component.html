@@ -1,0 +1,201 @@
+<section class="next-page next-account-page">
+  <div class="next-account-layout">
+    <aside class="next-account-sidebar">
+      <div class="next-account-hero">
+        <div class="next-account-avatar">{{ initials }}</div>
+        <div class="next-account-name">{{ fullName }}</div>
+        <div class="next-account-role">{{ roleLabel }} · {{ companyLabel }}</div>
+        <span class="next-account-badge">● Conta ativa</span>
+      </div>
+
+      <button class="next-account-menu-item" type="button" [class.active]="activeTab === 'dados'" (click)="setTab('dados')">
+        <span>👤</span>
+        Dados pessoais
+      </button>
+      <button class="next-account-menu-item" type="button" [class.active]="activeTab === 'empresa'" (click)="setTab('empresa')">
+        <span>🏢</span>
+        Empresa
+      </button>
+      <button class="next-account-menu-item" type="button" [class.active]="activeTab === 'notificacoes'" (click)="setTab('notificacoes')">
+        <span>🔔</span>
+        Notificações
+      </button>
+      <button class="next-account-menu-item" type="button" [class.active]="activeTab === 'seguranca'" (click)="setTab('seguranca')">
+        <span>🔒</span>
+        Segurança
+      </button>
+      <button class="next-account-menu-item next-account-menu-item--danger" type="button" (click)="logout()">
+        <span>🚪</span>
+        Sair da conta
+      </button>
+    </aside>
+
+    <div class="next-account-content">
+      @if (activeTab === 'dados') {
+        <section class="next-account-section">
+          <h3>Dados pessoais</h3>
+
+          <div class="next-account-field-row">
+            <label class="next-account-field">
+              <span>Nome completo</span>
+              <input type="text" [(ngModel)]="personalForm.fullName" />
+            </label>
+
+            <label class="next-account-field">
+              <span>Cargo</span>
+              <input type="text" [(ngModel)]="personalForm.role" />
+            </label>
+          </div>
+
+          <div class="next-account-field-row">
+            <label class="next-account-field">
+              <span>E-mail</span>
+              <input type="email" [(ngModel)]="personalForm.email" />
+            </label>
+
+            <label class="next-account-field">
+              <span>WhatsApp</span>
+              <input type="text" [(ngModel)]="personalForm.contact" />
+            </label>
+          </div>
+
+          <label class="next-account-field">
+            <span>Nova senha</span>
+            <div class="next-account-password">
+              <input
+                [type]="hidePassword ? 'password' : 'text'"
+                [(ngModel)]="newPassword"
+                placeholder="Deixe em branco para manter a atual"
+              />
+              <button type="button" (click)="hidePassword = !hidePassword">
+                {{ hidePassword ? 'Mostrar' : 'Ocultar' }}
+              </button>
+            </div>
+          </label>
+
+          <div class="next-account-actions">
+            <button class="next-account-primary" type="button" (click)="savePersonalData()">
+              Salvar alterações
+            </button>
+            <button class="next-account-secondary" type="button" (click)="updatePassword()">
+              Atualizar senha
+            </button>
+          </div>
+        </section>
+      }
+
+      @if (activeTab === 'empresa') {
+        <section class="next-account-section">
+          <h3>Dados da empresa</h3>
+
+          <div class="next-account-field-row">
+            <label class="next-account-field">
+              <span>Nome da empresa</span>
+              <input type="text" [ngModel]="companyForm.companyName" readonly />
+            </label>
+
+            <label class="next-account-field">
+              <span>CNPJ</span>
+              <input type="text" [ngModel]="companyForm.document" readonly />
+            </label>
+          </div>
+
+          <div class="next-account-field-row">
+            <label class="next-account-field">
+              <span>Cidade</span>
+              <input type="text" [ngModel]="companyForm.city" readonly />
+            </label>
+
+            <label class="next-account-field">
+              <span>Estado</span>
+              <input type="text" [ngModel]="companyForm.state" readonly />
+            </label>
+          </div>
+
+          <p class="next-muted">Os dados da empresa são gerenciados pelo cadastro administrativo de empresas.</p>
+        </section>
+      }
+
+      @if (activeTab === 'notificacoes') {
+        <section class="next-account-section">
+          <h3>Preferências de notificação</h3>
+
+          <label class="next-toggle-row">
+            <div>
+              <div class="next-toggle-row__title">Alertas críticos por e-mail</div>
+              <div class="next-toggle-row__subtitle">Notificação imediata para eventos críticos</div>
+            </div>
+            <input type="checkbox" [(ngModel)]="preferences.criticalEmail" />
+          </label>
+
+          <label class="next-toggle-row">
+            <div>
+              <div class="next-toggle-row__title">Alertas por WhatsApp</div>
+              <div class="next-toggle-row__subtitle">Funcionalidade ainda não disponível neste ambiente</div>
+            </div>
+            <input type="checkbox" [ngModel]="false" disabled />
+          </label>
+
+          <label class="next-toggle-row">
+            <div>
+              <div class="next-toggle-row__title">Resumo diário por e-mail</div>
+              <div class="next-toggle-row__subtitle">Relatório consolidado às 7h da manhã</div>
+            </div>
+            <input type="checkbox" [(ngModel)]="preferences.dailySummary" />
+          </label>
+
+          <label class="next-toggle-row">
+            <div>
+              <div class="next-toggle-row__title">Resumo semanal</div>
+              <div class="next-toggle-row__subtitle">Indicadores consolidados toda segunda-feira</div>
+            </div>
+            <input type="checkbox" [(ngModel)]="preferences.weeklySummary" />
+          </label>
+
+          <label class="next-toggle-row">
+            <div>
+              <div class="next-toggle-row__title">Alertas de performance abaixo da meta</div>
+              <div class="next-toggle-row__subtitle">Aviso automático de queda de performance</div>
+            </div>
+            <input type="checkbox" [(ngModel)]="preferences.lowPerformanceAlerts" />
+          </label>
+
+          <div class="next-account-actions">
+            <button class="next-account-primary" type="button" (click)="savePreferences()">
+              Salvar preferências
+            </button>
+          </div>
+        </section>
+      }
+
+      @if (activeTab === 'seguranca') {
+        <section class="next-account-section">
+          <h3>Segurança</h3>
+
+          <article class="next-security-box">
+            <div>
+              <strong>Autenticação em dois fatores</strong>
+              <p>Adicione uma camada extra de segurança à sua conta.</p>
+            </div>
+            <button class="next-account-secondary" type="button">Configurar</button>
+          </article>
+
+          <article class="next-security-box">
+            <div>
+              <strong>Sessão atual</strong>
+              <p>Usuário {{ user.user_login || personalForm.email }} autenticado neste ambiente local.</p>
+            </div>
+            <span class="next-account-badge next-account-badge--soft">Sessão ativa</span>
+          </article>
+
+          <article class="next-security-box">
+            <div>
+              <strong>Troca de senha</strong>
+              <p>Use o campo de nova senha na aba de dados pessoais para atualizar sua credencial.</p>
+            </div>
+          </article>
+        </section>
+      }
+    </div>
+  </div>
+</section>

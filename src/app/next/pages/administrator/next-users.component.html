@@ -1,0 +1,87 @@
+<section class="next-page">
+  <article class="next-page-card">
+    <div class="next-toolbar">
+      <div class="next-inline-filters">
+        <label class="next-field-inline">
+          <span>Buscar</span>
+          <input type="text" [(ngModel)]="search" placeholder="Nome, login ou e-mail" />
+        </label>
+        <label class="next-field-inline">
+          <span>Status</span>
+          <select [(ngModel)]="selectedStatus">
+            <option value="">Todos</option>
+            <option value="1">Ativo</option>
+            <option value="0">Inativo</option>
+          </select>
+        </label>
+        <label class="next-field-inline">
+          <span>Perfil</span>
+          <select [(ngModel)]="selectedProfile">
+            <option value="">Todos</option>
+            @for (profile of profileOptions; track profile) {
+              <option [value]="profile">{{ profile }}</option>
+            }
+          </select>
+        </label>
+      </div>
+
+      <button class="next-primary-button" type="button" (click)="openDialog('Add', {})">
+        + Adicionar usuário
+      </button>
+    </div>
+  </article>
+
+  <article class="next-page-card">
+    @if (isLoading) {
+      <div class="next-empty-state">Carregando usuários...</div>
+    } @else {
+      <div class="next-table-wrap">
+        <table class="next-table">
+          <thead>
+            <tr>
+              <th>Usuário</th>
+              <th>E-mail</th>
+              <th>Contato</th>
+              <th>Empresa</th>
+              <th>Perfil</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of filteredUsers; track user.id) {
+              <tr>
+                <td>
+                  <strong>{{ user.first_name }} {{ user.last_name }}</strong>
+                  <div class="next-muted">{{ user.user_login }}</div>
+                </td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.contact }}</td>
+                <td>{{ user.companyName || '-' }}</td>
+                <td>{{ user.profileName }}</td>
+                <td>
+                  <span class="next-status" [class]="'next-status--' + statusClass(user.status)">
+                    {{ statusLabel(user.status) }}
+                  </span>
+                </td>
+                <td>
+                  <div class="next-table__actions">
+                    <button class="next-table__icon" type="button" (click)="openDialog('Update', user)">✏️</button>
+                    <button class="next-table__icon" type="button" (click)="openDialog('Delete', user)">🗑️</button>
+                    <button class="next-table__icon" type="button" (click)="openDialog('Passkey', user)">🔑</button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7">
+                  <div class="next-empty-state">Nenhum usuário encontrado.</div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </article>
+</section>

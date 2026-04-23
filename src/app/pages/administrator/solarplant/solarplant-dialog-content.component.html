@@ -85,12 +85,40 @@
                         />
                     </mat-form-field>
                 </div>
+                <div class="col-lg-6">
+                    <mat-label class="f-s-14 f-w-600 m-b-8 d-block">{{ 'SolarplantPage.Latitude' | translate }}</mat-label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input
+                                type="number"
+                                matInput
+                                id="latitude"
+                                name="latitude"
+                                [(ngModel)]="local_data.latitude"
+                                [placeholder]="'SolarplantPage.Latitude' | translate"
+                                inputmode="decimal"
+                                step="0.000001"
+                        />
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6">
+                    <mat-label class="f-s-14 f-w-600 m-b-8 d-block">{{ 'SolarplantPage.Longitude' | translate }}</mat-label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input
+                                type="number"
+                                matInput
+                                id="longitude"
+                                name="longitude"
+                                [(ngModel)]="local_data.longitude"
+                                [placeholder]="'SolarplantPage.Longitude' | translate"
+                                inputmode="decimal"
+                                step="0.000001"
+                        />
+                    </mat-form-field>
+                </div>
             </div>
             <button mat-flat-button
                     (click)="doAction()"
-                    [disabled]="!userForm.valid ||
-                                !local_data.partnershipId ||
-                                local_data.partnershipId <= 0">
+                    [disabled]="!userForm.valid">
                 {{ 'Common.Save' | translate }}
             </button>
             <button

@@ -1,0 +1,35 @@
+<section class="next-page">
+  <article class="next-page-card next-import-card">
+    <div>
+      <h3>Importação Paralela</h3>
+      <p class="next-section-subtitle">
+        Nesta primeira fase, o portal valida o arquivo localmente sem disparar processamento no backend.
+      </p>
+    </div>
+
+    <label class="next-import-dropzone">
+      <input type="file" accept=".csv,text/csv" (change)="onFileSelected($event)" hidden />
+      <strong>{{ fileName || 'Arraste ou selecione um arquivo CSV' }}</strong>
+      <span>{{ validationMessage }}</span>
+    </label>
+  </article>
+
+  <article class="next-page-card">
+    <h3>Pré-visualização</h3>
+    @if (previewRows.length === 0) {
+      <div class="next-empty-state">Nenhum arquivo carregado.</div>
+    } @else {
+      <table class="next-table">
+        <tbody>
+          @for (row of previewRows; track $index) {
+            <tr>
+              @for (cell of row; track $index) {
+                <td>{{ cell }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </article>
+</section>
